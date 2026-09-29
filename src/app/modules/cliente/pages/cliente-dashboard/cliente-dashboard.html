@@ -94,9 +94,7 @@
                     {{ pagamento.valor | currency: "BRL" }}
                   </span>
                 </div>
-                <app-bag-forma-pagamento></app-bag-forma-pagamento>
                 <div class="forma-pagamento">
-
                   <i [class]="iconePagamento(pagamento.tipoPagamento)"></i>
                   <span>{{ pagamento.tipoPagamento | titlecase }}</span>
                 </div>

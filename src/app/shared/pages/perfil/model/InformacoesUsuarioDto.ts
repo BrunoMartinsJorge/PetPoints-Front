@@ -5,7 +5,7 @@ export interface InformacoesUsuarioDto {
   email: string;
   imagem: string;
   genero: GeneroEnum;
-  dataNascimento: string;
+  dataNascimento: Date;
   telefone: string;
   cpf: string;
 }

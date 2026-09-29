@@ -10,7 +10,7 @@
       />
     }
   </p-fieldset>
-  <hr>
+  <hr />
   <p-table
     [value]="produtosComBaixoEstoque"
     [paginator]="true"
@@ -38,6 +38,17 @@
         <td>{{ produto.tipo }}</td>
         <td>{{ produto.quantidadeEstoque }} Unidades</td>
         <td>R$ {{ produto.valorUnitario | number: "1.2-2" }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="4" style="text-align: center; overflow: hidden">
+          @if (carregandoProdutos) {
+            <p-progressSpinner></p-progressSpinner>
+          } @else { 
+            <span>Nenhum produto com baixo estoque!</span>
+          }
+        </td>
       </tr>
     </ng-template>
   </p-table>

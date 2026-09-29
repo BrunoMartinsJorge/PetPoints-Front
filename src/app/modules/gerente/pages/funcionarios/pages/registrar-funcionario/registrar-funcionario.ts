@@ -107,6 +107,7 @@ export class RegistrarFuncionario implements OnInit {
       dataNascimento: funcionario.dataNascimento,
       permissao: funcionario.permissao,
       especializacao: funcionario.especializacao || null,
+      crmv: funcionario.crmv || null,
     };
     this.service.cadastrarFuncionario(payload).subscribe({
       next: () => {

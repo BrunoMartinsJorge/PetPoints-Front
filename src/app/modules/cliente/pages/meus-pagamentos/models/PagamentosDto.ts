@@ -5,7 +5,7 @@ export interface PagamentosDto {
   id: number;
   idConsulta: number;
   valor: number;
-  dataLimitePagamento: Date;
+  dataLimitePagamento: string;
   statusPagamento: StatusPagamentoEnum;
   tipoPagamento: TipoPagamentoEnum;
   motivoIndeferimento: string;

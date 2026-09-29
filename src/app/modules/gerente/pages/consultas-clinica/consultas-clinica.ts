@@ -23,6 +23,7 @@ import { environment } from '../../../../../environments/environment';
 import { TipoPagamentoEnum } from '../../../../shared/models/enums/TipoPagamentoEnum';
 import { CardResumo } from '../../../../shared/components/card-resumo/card-resumo';
 import type { TomDescricaoCardResumo } from '../../../../shared/components/card-resumo/card-resumo';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-consultas-clinica',
@@ -34,6 +35,7 @@ import type { TomDescricaoCardResumo } from '../../../../shared/components/card-
     DetalhesConsulta,
     CardResumo,
   ],
+  providers: [ConfirmationService],
   templateUrl: './consultas-clinica.html',
   styleUrl: './consultas-clinica.scss',
 })
@@ -41,6 +43,7 @@ export class ConsultasClinica implements OnInit {
   private readonly service = inject(ConsultasClinicaService);
   private readonly toast = inject(MessageService);
   private readonly router = inject(Router);
+  private readonly confirmationService = inject(ConfirmationService);
 
   private consultas: ConsultaClinicaDto[] = [];
 
@@ -128,16 +131,13 @@ export class ConsultasClinica implements OnInit {
   public especializacoes: EspecializacaoDto[] = [];
   public carregandoEspecializacoes = false;
   public idEspecializacaoSelecionado: number | null = null;
+  public edicaoHabilitadaEspecializacao = false;
   public visibilidadeDialogAdicionarEspecializacao = false;
   public visibilidadeDialogEditarEspecializacao = false;
   public novaEspecializacao: EspecializacaoForm = {
     descricao: '',
   };
   public especializacaoEdicao: EspecializacaoForm = {
-    descricao: '',
-  };
-
-  public editarEspecializacao: EspecializacaoForm = {
     descricao: '',
   };
 
@@ -681,6 +681,119 @@ export class ConsultasClinica implements OnInit {
             severity: 'success',
             summary: 'Sucesso',
             detail: 'Especialização cadastrada com sucesso!',
+          });
+        },
+      });
+  }
+
+  public editarInformacoesEspecializacoes(): void {
+    if (!this.idEspecializacaoSelecionado) return;
+    this.service
+      .editarInformacoesEspecializacao(
+        this.especializacaoEdicao,
+        this.idEspecializacaoSelecionado,
+      )
+      .subscribe({
+        next: () => {
+          this.edicaoHabilitadaEspecializacao = false;
+          this.visibilidadeDialogEditarEspecializacao = false;
+          this.toast.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Especialização editada com sucesso!',
+          });
+          this.buscarEspecializacoes();
+        },
+        error: () => {
+          this.edicaoHabilitadaEspecializacao = false;
+          this.visibilidadeDialogEditarEspecializacao = false;
+        }
+      });
+  }
+
+  public alterarEdicaoEspecializacao(): void {
+    this.edicaoHabilitadaEspecializacao = !this.edicaoHabilitadaEspecializacao;
+    if (!this.edicaoHabilitadaEspecializacao) {
+      this.limparEdicaoEspecializacao();
+    }
+  }
+
+  public confirmarExclusaoEspecializacao(event: Event): void {
+    if (!this.idEspecializacaoSelecionado) return;
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Tem certeza que deseja excluir esta especialização?',
+      header: 'Confirmar Exclusão',
+      icon: 'fa fa-exclamation-triangle',
+      acceptLabel: 'Sim, excluir',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.excluirEspecializacao();
+      },
+    });
+  }
+
+  private excluirEspecializacao(): void {
+    if (!this.idEspecializacaoSelecionado) return;
+    this.service
+      .excluirEspecializacao(this.idEspecializacaoSelecionado)
+      .subscribe({
+        next: () => {
+          this.visibilidadeDialogEditarEspecializacao = false;
+          this.toast.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Especialização excluída com sucesso!',
+          });
+          this.buscarEspecializacoes();
+        },
+        error: () => {
+          this.toast.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Não foi possível excluir a especialização.',
+          });
+        },
+      });
+  }
+
+  public confirmarExclusaoTipoConsulta(event: Event): void {
+    if (!this.idTipoConsultaSelecionado) return;
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Tem certeza que deseja excluir este tipo de consulta?',
+      header: 'Confirmar Exclusão',
+      icon: 'fa fa-exclamation-triangle',
+      acceptLabel: 'Sim, excluir',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.excluirTipoConsulta();
+      },
+    });
+  }
+
+  private excluirTipoConsulta(): void {
+    if (!this.idTipoConsultaSelecionado) return;
+    this.service
+      .excluirTipoConsulta(this.idTipoConsultaSelecionado)
+      .subscribe({
+        next: () => {
+          this.visibilidadeDialogDetalhesTipoConsulta = false;
+          this.toast.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Tipo de consulta excluído com sucesso!',
+          });
+          this.buscarTiposConsulta();
+        },
+        error: () => {
+          this.toast.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail:
+              'Não foi possível excluir o tipo de consulta. Verifique se não existem consultas vinculadas.',
           });
         },
       });

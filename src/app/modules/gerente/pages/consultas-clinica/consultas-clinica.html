@@ -472,7 +472,7 @@
           <hr />
           <div class="acoes">
             <p-button
-              [label]="edicaoHabilitadaTipoConsulta ? 'Não Editar' : 'Editar'"
+              [label]="edicaoHabilitadaTipoConsulta ? 'Cancelar' : 'Editar'"
               severity="info"
               (click)="alterarEdicao()"
             />
@@ -481,6 +481,12 @@
               severity="success"
               [disabled]="!edicaoHabilitadaTipoConsulta"
               (click)="editarInformacoesTipoConsulta()"
+            />
+            <p-button
+              label="Excluir"
+              severity="danger"
+              icon="fa fa-trash"
+              (click)="confirmarExclusaoTipoConsulta($event)"
             />
           </div>
         </div>
@@ -579,28 +585,34 @@
       <p-tabpanel value="0">
         <div class="valores-detalhes">
           <div class="input-group">
-            <label for="nome">Nome</label>
+            <label for="nomeEspecializacao">Nome</label>
             <input
-              [disabled]="!edicaoHabilitadaTipoConsulta"
+              [disabled]="!edicaoHabilitadaEspecializacao"
               [(ngModel)]="especializacaoEdicao.descricao"
               type="text"
               pInputText
-              id="nome"
+              id="nomeEspecializacao"
               placeholder="Digite o nome"
             />
           </div>
           <hr />
           <div class="acoes">
             <p-button
-              [label]="edicaoHabilitadaTipoConsulta ? 'Não Editar' : 'Editar'"
+              [label]="edicaoHabilitadaEspecializacao ? 'Cancelar' : 'Editar'"
               severity="info"
-              (click)="alterarEdicao()"
+              (click)="alterarEdicaoEspecializacao()"
             />
             <p-button
               label="Salvar"
               severity="success"
-              [disabled]="!edicaoHabilitadaTipoConsulta"
-              (click)="editarInformacoesTipoConsulta()"
+              [disabled]="!edicaoHabilitadaEspecializacao"
+              (click)="editarInformacoesEspecializacoes()"
+            />
+            <p-button
+              label="Excluir"
+              severity="danger"
+              icon="fa fa-trash"
+              (click)="confirmarExclusaoEspecializacao($event)"
             />
           </div>
         </div>
@@ -690,3 +702,5 @@
   [idConsulta]="idConsultaSelecionada"
   (fechado)="idConsultaSelecionada = null"
 ></app-detalhes-consulta>
+
+<p-confirmDialog />
