@@ -36,6 +36,7 @@
             id="precoMin"
             placeholder="Preço Minimo"
             (input)="filtrarProdutos()"
+            [min]="0"
           />
         </div>
         <div class="input-group">
@@ -96,6 +97,13 @@
         <td>R$ {{ produto.valorUnitario }}</td>
         <td>{{ produto.tipo }}</td>
         <td>{{ produto.quantidadeEstoque }} Unidade(s)</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">
+          Nenhum produto encontrado
+        </td>
       </tr>
     </ng-template>
   </p-table>

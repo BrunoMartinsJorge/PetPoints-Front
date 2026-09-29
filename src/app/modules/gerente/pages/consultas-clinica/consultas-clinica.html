@@ -61,13 +61,6 @@
           (ngModelChange)="filtrarConsultas()"
           [disabled]="carregandoConsultas"
         ></p-datepicker>
-        <p-button
-          [label]="filtrosAtivos ? 'Filtros (ativos)' : 'Filtros'"
-          icon="fa fa-sliders"
-          severity="secondary"
-          [outlined]="true"
-          (click)="alterarVisibilidadeFiltros()"
-        />
         <div class="alternar-visao">
           <p-button
             icon="fa fa-table-cells-large"
@@ -86,87 +79,78 @@
             (click)="alterarModoVisualizacao(true)"
           />
         </div>
-        <p-button
-          icon="fa fa-gear"
-          severity="secondary"
-          [outlined]="true"
-          pTooltip="Tipos de consulta e especializações"
-          (click)="alterarVisibilidadeGestao()"
-        />
       </div>
     </div>
 
-    @if (visibilidadeFiltros) {
-      <div class="filtros">
-        <div class="inputs">
-          <div class="input-group">
-            <label for="cliente">Cliente</label>
-            <p-select
-              inputId="cliente"
-              [(ngModel)]="filtros.cliente"
-              [options]="clientesFiltros"
-              appendTo="body"
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Selecione um cliente"
-              (onChange)="filtrarConsultas()"
-              [disabled]="carregandoConsultas"
-            />
-          </div>
-          <div class="input-group">
-            <label for="veterinario">Veterinário</label>
-            <p-select
-              inputId="veterinario"
-              [(ngModel)]="filtros.veterinario"
-              [options]="veterinariosFiltros"
-              appendTo="body"
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Selecione um veterinário"
-              (onChange)="filtrarConsultas()"
-              [disabled]="carregandoConsultas"
-            />
-          </div>
-          <div class="input-group">
-            <label for="tipoConsulta">Tipo de Consulta</label>
-            <p-select
-              inputId="tipoConsulta"
-              [(ngModel)]="filtros.tipoConsulta"
-              [options]="tiposConsultasFiltros"
-              appendTo="body"
-              optionLabel="label"
-              optionValue="value"
-              placeholder="Selecione um tipo de consulta"
-              (onChange)="filtrarConsultas()"
-              [disabled]="
-                carregandoConsultas ||
-                carregandoTiposConsultas ||
-                tiposConsultas.length === 0
-              "
-            />
-          </div>
-        </div>
-        <div class="btns">
-          <p-button
-            label="Limpar Filtros"
-            severity="danger"
-            icon="fa fa-eraser"
-            [outlined]="true"
-            [disabled]="!filtrosAtivos"
-            (click)="limparFiltros()"
+    <div class="filtros">
+      <div class="inputs">
+        <div class="input-group">
+          <label for="cliente">Cliente</label>
+          <p-select
+            inputId="cliente"
+            [(ngModel)]="filtros.cliente"
+            [options]="clientesFiltros"
+            appendTo="body"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione um cliente"
+            (onChange)="filtrarConsultas()"
+            [disabled]="carregandoConsultas"
           />
-          <p-button
-            [label]="
-              carregandoRelatorio ? 'Gerando Relatório...' : 'Gerar Relatório'
+        </div>
+        <div class="input-group">
+          <label for="veterinario">Veterinário</label>
+          <p-select
+            inputId="veterinario"
+            [(ngModel)]="filtros.veterinario"
+            [options]="veterinariosFiltros"
+            appendTo="body"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione um veterinário"
+            (onChange)="filtrarConsultas()"
+            [disabled]="carregandoConsultas"
+          />
+        </div>
+        <div class="input-group">
+          <label for="tipoConsulta">Tipo de Consulta</label>
+          <p-select
+            inputId="tipoConsulta"
+            [(ngModel)]="filtros.tipoConsulta"
+            [options]="tiposConsultasFiltros"
+            appendTo="body"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecione um tipo de consulta"
+            (onChange)="filtrarConsultas()"
+            [disabled]="
+              carregandoConsultas ||
+              carregandoTiposConsultas ||
+              tiposConsultas.length === 0
             "
-            [disabled]="carregandoRelatorio"
-            severity="success"
-            [icon]="carregandoRelatorio ? 'pi pi-spin pi-spinner' : 'fa fa-file'"
-            (click)="gerarRelatorio()"
           />
         </div>
       </div>
-    }
+      <div class="btns">
+        <p-button
+          label="Limpar Filtros"
+          severity="danger"
+          icon="fa fa-eraser"
+          [outlined]="true"
+          [disabled]="!filtrosAtivos"
+          (click)="limparFiltros()"
+        />
+        <p-button
+          [label]="
+            carregandoRelatorio ? 'Gerando Relatório...' : 'Gerar Relatório'
+          "
+          [disabled]="carregandoRelatorio"
+          severity="success"
+          [icon]="carregandoRelatorio ? 'pi pi-spin pi-spinner' : 'fa fa-file'"
+          (click)="gerarRelatorio()"
+        />
+      </div>
+    </div>
 
     @if (carregandoConsultas) {
       <div class="grade-consultas">
@@ -225,7 +209,7 @@
 
                 <div class="participante tutor">
                   <div class="avatar">
-                    @if (avatarComErro('cliente-' + consulta.cliente.id)) {
+                    @if (avatarComErro("cliente-" + consulta.cliente.id)) {
                       <span class="iniciais">
                         {{ pegarIniciais(consulta.cliente.nome) }}
                       </span>
@@ -233,7 +217,9 @@
                       <img
                         [src]="urlAvatar(consulta.cliente.id)"
                         [alt]="'Foto de ' + consulta.cliente.nome"
-                        (error)="marcarAvatarComErro('cliente-' + consulta.cliente.id)"
+                        (error)="
+                          marcarAvatarComErro('cliente-' + consulta.cliente.id)
+                        "
                       />
                     }
                   </div>
@@ -245,7 +231,7 @@
 
                 <div class="participante">
                   <div class="avatar">
-                    @if (avatarComErro('vet-' + consulta.veterinario.id)) {
+                    @if (avatarComErro("vet-" + consulta.veterinario.id)) {
                       <span class="iniciais">
                         {{ pegarIniciais(consulta.veterinario.nome) }}
                       </span>
@@ -253,7 +239,9 @@
                       <img
                         [src]="urlAvatar(consulta.veterinario.id)"
                         [alt]="'Foto de ' + consulta.veterinario.nome"
-                        (error)="marcarAvatarComErro('vet-' + consulta.veterinario.id)"
+                        (error)="
+                          marcarAvatarComErro('vet-' + consulta.veterinario.id)
+                        "
                       />
                     }
                   </div>
@@ -291,99 +279,97 @@
     }
   </section>
 
-  @if (visibilidadeGestao) {
-    <section class="gestao">
-      <p-fieldset [toggleable]="false">
-        <ng-template pTemplate="header">
-          <div class="header-fieldset">
-            <i class="fa fa-user-doctor"></i>
-            <span>Especializações</span>
-          </div>
-        </ng-template>
-        <div class="lista-cadastros">
-          <p-button
-            label="Adicionar Nova Especialização"
-            severity="info"
-            icon="fa fa-plus"
-            [outlined]="true"
-            [style]="{ width: '100%' }"
-            (click)="alterarVisibilidadeAdicionarEspecializacao()"
-          />
-          @if (carregandoEspecializacoes) {
-            <p-skeleton height="60px" />
-            <p-skeleton height="60px" />
-          } @else if (especializacoes.length === 0) {
-            <span class="sem-resultados">Nenhuma especialização encontrada!</span>
-          } @else {
-            <div class="rolagem">
-              @for (tipo of especializacoes; track tipo.id) {
-                <div class="card-cadastro">
-                  <div class="informacoes">
-                    <strong>{{ tipo.descricao }}</strong>
-                  </div>
-                  <p-button
-                    icon="fa fa-eye"
-                    severity="secondary"
-                    [outlined]="true"
-                    [rounded]="true"
-                    pTooltip="Ver especialização"
-                    (click)="verDetalhesEspecializacao(tipo.id)"
-                  />
-                </div>
-              }
-            </div>
-          }
+  <section class="gestao">
+    <p-fieldset [toggleable]="false">
+      <ng-template pTemplate="header">
+        <div class="header-fieldset">
+          <i class="fa fa-user-doctor"></i>
+          <span>Especializações</span>
         </div>
-      </p-fieldset>
+      </ng-template>
+      <div class="lista-cadastros">
+        <p-button
+          label="Adicionar Nova Especialização"
+          severity="info"
+          icon="fa fa-plus"
+          [outlined]="true"
+          [style]="{ width: '100%' }"
+          (click)="alterarVisibilidadeAdicionarEspecializacao()"
+        />
+        @if (carregandoEspecializacoes) {
+          <p-skeleton height="60px" />
+          <p-skeleton height="60px" />
+        } @else if (especializacoes.length === 0) {
+          <span class="sem-resultados">Nenhuma especialização encontrada!</span>
+        } @else {
+          <div class="rolagem">
+            @for (tipo of especializacoes; track tipo.id) {
+              <div class="card-cadastro">
+                <div class="informacoes">
+                  <strong>{{ tipo.descricao }}</strong>
+                </div>
+                <p-button
+                  icon="fa fa-eye"
+                  severity="secondary"
+                  [outlined]="true"
+                  [rounded]="true"
+                  pTooltip="Ver especialização"
+                  (click)="verDetalhesEspecializacao(tipo.id)"
+                />
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </p-fieldset>
 
-      <p-fieldset [toggleable]="false">
-        <ng-template pTemplate="header">
-          <div class="header-fieldset">
-            <i class="fa fa-notes-medical"></i>
-            <span>Tipos de Consultas</span>
-          </div>
-        </ng-template>
-        <div class="lista-cadastros">
-          <p-button
-            label="Adicionar Novo Tipo de Consulta"
-            severity="info"
-            icon="fa fa-plus"
-            [outlined]="true"
-            [style]="{ width: '100%' }"
-            (click)="alterarNovoTipoConsulta()"
-          />
-          @if (carregandoTiposConsultas) {
-            <p-skeleton height="76px" />
-            <p-skeleton height="76px" />
-          } @else if (tiposConsultas.length === 0) {
-            <span class="sem-resultados"
-              >Nenhum tipo de consulta encontrado!</span
-            >
-          } @else {
-            <div class="rolagem">
-              @for (tipo of tiposConsultas; track tipo.id) {
-                <div class="card-cadastro">
-                  <div class="informacoes">
-                    <strong>{{ tipo.nome }}</strong>
-                    <span class="descricao">{{ tipo.descricao }}</span>
-                    <span class="valor">{{ tipo.valor | currency: "BRL" }}</span>
-                  </div>
-                  <p-button
-                    icon="fa fa-eye"
-                    severity="secondary"
-                    [outlined]="true"
-                    [rounded]="true"
-                    pTooltip="Ver tipo de consulta"
-                    (click)="verDetalhesTipoConsulta(tipo.id)"
-                  />
-                </div>
-              }
-            </div>
-          }
+    <p-fieldset [toggleable]="false">
+      <ng-template pTemplate="header">
+        <div class="header-fieldset">
+          <i class="fa fa-notes-medical"></i>
+          <span>Tipos de Consultas</span>
         </div>
-      </p-fieldset>
-    </section>
-  }
+      </ng-template>
+      <div class="lista-cadastros">
+        <p-button
+          label="Adicionar Novo Tipo de Consulta"
+          severity="info"
+          icon="fa fa-plus"
+          [outlined]="true"
+          [style]="{ width: '100%' }"
+          (click)="alterarNovoTipoConsulta()"
+        />
+        @if (carregandoTiposConsultas) {
+          <p-skeleton height="76px" />
+          <p-skeleton height="76px" />
+        } @else if (tiposConsultas.length === 0) {
+          <span class="sem-resultados"
+            >Nenhum tipo de consulta encontrado!</span
+          >
+        } @else {
+          <div class="rolagem">
+            @for (tipo of tiposConsultas; track tipo.id) {
+              <div class="card-cadastro">
+                <div class="informacoes">
+                  <strong>{{ tipo.nome }}</strong>
+                  <span class="descricao">{{ tipo.descricao }}</span>
+                  <span class="valor">{{ tipo.valor | currency: "BRL" }}</span>
+                </div>
+                <p-button
+                  icon="fa fa-eye"
+                  severity="secondary"
+                  [outlined]="true"
+                  [rounded]="true"
+                  pTooltip="Ver tipo de consulta"
+                  (click)="verDetalhesTipoConsulta(tipo.id)"
+                />
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </p-fieldset>
+  </section>
 </main>
 <p-dialog
   [(visible)]="visibilidadeDialogNovoTipoConsulta"
@@ -486,7 +472,7 @@
           <hr />
           <div class="acoes">
             <p-button
-              [label]="edicaoHabilitadaTipoConsulta ? 'Não Editar' : 'Editar'"
+              [label]="edicaoHabilitadaTipoConsulta ? 'Cancelar' : 'Editar'"
               severity="info"
               (click)="alterarEdicao()"
             />
@@ -495,6 +481,12 @@
               severity="success"
               [disabled]="!edicaoHabilitadaTipoConsulta"
               (click)="editarInformacoesTipoConsulta()"
+            />
+            <p-button
+              label="Excluir"
+              severity="danger"
+              icon="fa fa-trash"
+              (click)="confirmarExclusaoTipoConsulta($event)"
             />
           </div>
         </div>
@@ -593,28 +585,34 @@
       <p-tabpanel value="0">
         <div class="valores-detalhes">
           <div class="input-group">
-            <label for="nome">Nome</label>
+            <label for="nomeEspecializacao">Nome</label>
             <input
-              [disabled]="!edicaoHabilitadaTipoConsulta"
+              [disabled]="!edicaoHabilitadaEspecializacao"
               [(ngModel)]="especializacaoEdicao.descricao"
               type="text"
               pInputText
-              id="nome"
+              id="nomeEspecializacao"
               placeholder="Digite o nome"
             />
           </div>
           <hr />
           <div class="acoes">
             <p-button
-              [label]="edicaoHabilitadaTipoConsulta ? 'Não Editar' : 'Editar'"
+              [label]="edicaoHabilitadaEspecializacao ? 'Cancelar' : 'Editar'"
               severity="info"
-              (click)="alterarEdicao()"
+              (click)="alterarEdicaoEspecializacao()"
             />
             <p-button
               label="Salvar"
               severity="success"
-              [disabled]="!edicaoHabilitadaTipoConsulta"
-              (click)="editarInformacoesTipoConsulta()"
+              [disabled]="!edicaoHabilitadaEspecializacao"
+              (click)="editarInformacoesEspecializacoes()"
+            />
+            <p-button
+              label="Excluir"
+              severity="danger"
+              icon="fa fa-trash"
+              (click)="confirmarExclusaoEspecializacao($event)"
             />
           </div>
         </div>
@@ -704,3 +702,5 @@
   [idConsulta]="idConsultaSelecionada"
   (fechado)="idConsultaSelecionada = null"
 ></app-detalhes-consulta>
+
+<p-confirmDialog />

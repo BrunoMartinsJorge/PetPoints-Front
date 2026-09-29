@@ -23,6 +23,7 @@ export class NotificacoesPop implements OnInit {
     this.notificacoesWs.connect();
     this.notificacoesService.notificacoes$.subscribe((n) => {
       this.notificacoes = n;
+      this.ordenarNotificacoes();
     });
   }
 
@@ -39,13 +40,15 @@ export class NotificacoesPop implements OnInit {
   public notificacoesParaMarcarComoLidas: number[] = [];
 
   public marcarComoLida(notificacao: NotificacaoDto): void {
-    this.notificacoesService.marcarNotificacaoComoLida(
-      notificacao.id,
-    ).subscribe({
-      next: () => {
-        this.notificacoes = this.notificacoes.filter((n) => n.id !== notificacao.id);
-      }
-    });
+    this.notificacoesService
+      .marcarNotificacaoComoLida(notificacao.id)
+      .subscribe({
+        next: () => {
+          this.notificacoes = this.notificacoes.filter(
+            (n) => n.id !== notificacao.id,
+          );
+        },
+      });
   }
 
   public alterarPopover(): void {
@@ -62,5 +65,13 @@ export class NotificacoesPop implements OnInit {
       (n) => n === id,
     );
     return notificacao ? true : false;
+  }
+
+  public ordenarNotificacoes(): void {
+    if (this.notificacoes.length == 0 || this.notificacoes.length == 1) return;
+    const valores = this.notificacoes;
+    this.notificacoes = valores.sort(
+      (a, b) => new Date(a.data).getTime() + new Date(b.data).getTime(),
+    );
   }
 }

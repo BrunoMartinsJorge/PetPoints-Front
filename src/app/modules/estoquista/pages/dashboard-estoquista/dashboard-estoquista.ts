@@ -14,7 +14,7 @@ import type { ProdutoEstoqueDto } from '../../../../shared/models/ProdutoEstoque
 })
 export class DashboardEstoquista implements OnInit {
   private readonly service = inject(DashboardEstoquistaService);
-  
+
   private historicoMovimentacoesMensais: HistoricoMovimentacoesMensaisDto[] =
     [];
   public produtosComBaixoEstoque: ProdutoEstoqueDto[] = [];
@@ -30,6 +30,7 @@ export class DashboardEstoquista implements OnInit {
       },
     ],
   };
+  public carregandoProdutos = false;
   public options = {};
 
   ngOnInit(): void {
@@ -138,8 +139,15 @@ export class DashboardEstoquista implements OnInit {
 
   private buscarProdutosComBaixoEstoque(): void {
     this.produtosComBaixoEstoque = [];
+    this.carregandoProdutos = true;
     this.service.listarProdutosComBaixoEstoque().subscribe({
-      next: (response: ProdutoEstoqueDto[]) => { this.produtosComBaixoEstoque = response; }
+      next: (response: ProdutoEstoqueDto[]) => {
+        this.produtosComBaixoEstoque = response;
+        this.carregandoProdutos = false;
+      },
+      error: () => {
+        this.carregandoProdutos = false;
+      },
     });
   }
 }

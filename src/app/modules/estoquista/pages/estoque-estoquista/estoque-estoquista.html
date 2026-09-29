@@ -165,7 +165,9 @@
         </td>
         <td>{{ produto.descricao }}</td>
         <td>{{ produto.valorUnitario | currency: "BRL" }}</td>
-        <td>{{ produto.tipo }}</td>
+        <td>
+          <app-bag-tipo-produto [tipoProduto]="produto.tipo"></app-bag-tipo-produto>
+        </td>
         <td>
           <i
             id="icone-quantidade"

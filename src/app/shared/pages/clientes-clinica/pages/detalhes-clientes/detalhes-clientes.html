@@ -146,7 +146,7 @@
                   [status]="consulta.status"
                 ></app-bag-status-consulta>
                 <strong>Veterinário: {{ consulta.veterinario }}</strong>
-                <span class="tipo-consulta">{{ consulta.tipoConsulta }}</span>
+                <p-tag [value]="consulta.tipoConsulta" severity="secondary"></p-tag>
               </div>
               <hr />
               <div>

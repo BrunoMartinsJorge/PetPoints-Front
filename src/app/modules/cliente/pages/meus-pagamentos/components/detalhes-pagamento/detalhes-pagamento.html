@@ -1,4 +1,4 @@
-<p-toast/>
+<p-toast />
 <p-dialog
   header="Detalhes do Pagamento"
   [(visible)]="visibilidade"
@@ -12,156 +12,198 @@
       <p-progressSpinner></p-progressSpinner>
     </div>
   } @else {
-    <p-tabs [value]="1">
+    <p-tabs [value]="0">
       <p-tablist>
         <p-tab [value]="0">Informações</p-tab>
-        <p-tab [value]="1" [disabled]="!habilitarAcessarComprovante"
-          >Pagamento</p-tab
-        >
+        <p-tab [value]="1">Pagamento</p-tab>
       </p-tablist>
       <p-tabpanels>
         <p-tabpanel [value]="0">
           <section class="informacoes-pagamento">
-            @if (carregandoInformacoesConsultaPagamento) {
-              <p-skeleton height="150px" />
-            } @else {
-              <p-fieldset legend="Informações do Pagamento">
-                <div class="informacoes">
-                  <div id="info">
-                    <strong>Valor: </strong>
-                    <span>
-                      R${{ pagamentoSelecionado.valor | currency: "BRL" }}
-                    </span>
-                  </div>
-                  <div id="info">
-                    <strong>Data Limite: </strong>
-                    <span>
-                      {{ pagamentoSelecionado.dataLimitePagamento }}
-                    </span>
-                  </div>
-                  <div class="badges">
-                    <span
-                      [ngClass]="
-                        'status-pagamento ' +
-                        pagamentoSelecionado.statusPagamento.toLowerCase()
-                      "
-                      >{{ pagamentoSelecionado.statusPagamento }}</span
-                    >
-                    <span
-                      id="pagamento-atrasado"
-                      [ngClass]="
-                        pagamentoSelecionado.atrasado ? 'atrasado' : 'em-tempo'
-                      "
-                    >
-                      {{
-                        pagamentoSelecionado.atrasado ? "Atrasado" : "Em Tempo"
-                      }}
-                    </span>
-                  </div>
+            @if (
+              pagamentoReprovado && pagamentoSelecionado.motivoIndeferimento
+            ) {
+              <div class="aviso reprovado">
+                <i class="fa fa-circle-exclamation"></i>
+                <div>
+                  <strong>Pagamento reprovado</strong>
+                  <span>{{ pagamentoSelecionado.motivoIndeferimento }}</span>
                 </div>
-              </p-fieldset>
-              <hr />
-              <p-fieldset legend="Consulta" [toggleable]="true">
-                @if (consultaPagamento) {
-                  <div class="consulta-card">
-                    <div
-                      style="
-                        min-width: 200px;
-                        flex: 1;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 0.5rem;
-                      "
-                    >
-                      <div class="body-card">
-                        <app-bag-status-consulta
-                          [status]="consultaPagamento.statusConsulta"
-                        ></app-bag-status-consulta>
-                        <strong
-                          >Veterinário:
-                          {{ consultaPagamento.veterinarioConsulta }}</strong
-                        >
-                        <span class="tipo-consulta">{{
-                          consultaPagamento.tipoConsulta
-                        }}</span>
-                      </div>
-                      <hr />
-                      <div>
-                        <span class="solicitado-em"
-                          >Data e Hora da Consulta:
-                          {{
-                            consultaPagamento.dataHoraConsulta
-                              | date: "dd/MM/yyyy - HH:mm"
-                          }}</span
-                        >
-                      </div>
-                    </div>
-                    <p-button
-                      label="Ver"
-                      icon="fa fa-eye"
-                      severity="secondary"
-                      (click)="acessarConsulta()"
-                    />
-                  </div>
-                } @else {
-                  <span class="sem-resultados">
-                    Nenhuma consulta para esse pagamento!
-                  </span>
-                }
-              </p-fieldset>
+              </div>
             }
+            <p-fieldset legend="Resumo do Pagamento">
+              <div class="resumo">
+                <div class="valor">
+                  <span class="rotulo">Valor</span>
+                  <strong>{{
+                    pagamentoSelecionado.valor | currency: "BRL"
+                  }}</strong>
+                </div>
+                <div class="badges">
+                  <app-bag-status-pagamento
+                    [status]="pagamentoSelecionado.statusPagamento"
+                  ></app-bag-status-pagamento>
+                  <app-bag-forma-pagamento
+                    [tipo]="pagamentoSelecionado.tipoPagamento"
+                  ></app-bag-forma-pagamento>
+                  @if (!pagamentoAprovado) {
+                    <p-tag
+                      [severity]="
+                        pagamentoSelecionado.atrasado ? 'danger' : 'warn'
+                      "
+                      [value]="
+                        pagamentoSelecionado.atrasado ? 'Atrasado' : 'Em Tempo'
+                      "
+                      [icon]="
+                        pagamentoSelecionado.atrasado
+                          ? 'fa far fa-clock'
+                          : 'fa fas fa-calendar-times'
+                      "
+                    ></p-tag>
+                  }
+                </div>
+              </div>
+              <hr />
+              <ul class="dados">
+                <li>
+                  <span>Data Limite:</span>
+                  <span>{{ pagamentoSelecionado.dataLimitePagamento }}</span>
+                </li>
+                <li>
+                  <span>Identificador:</span>
+                  <span>Nº {{ pagamentoSelecionado.id }}</span>
+                </li>
+              </ul>
+            </p-fieldset>
+            <hr />
+            <p-fieldset legend="Consulta" [toggleable]="true">
+              @if (carregandoInformacoesConsultaPagamento) {
+                <p-skeleton height="110px" />
+              } @else if (consultaPagamento) {
+                <div class="consulta-card">
+                  <app-imagem
+                    [urlImagem]="imagemPet"
+                    [alt]="consultaPagamento.petConsulta"
+                    width="56"
+                    tipo="pet"
+                  ></app-imagem>
+                  <div class="dados-consulta">
+                    <div class="body-card">
+                      <strong>{{ consultaPagamento.petConsulta }}</strong>
+                      <app-bag-status-consulta
+                        [status]="consultaPagamento.statusConsulta"
+                      ></app-bag-status-consulta>
+                    </div>
+                    <span class="veterinario">
+                      Veterinário: {{ consultaPagamento.veterinarioConsulta }}
+                    </span>
+                    <div class="rodape-card">
+                      <p-tag
+                        [value]="consultaPagamento.tipoConsulta"
+                        severity="secondary"
+                      ></p-tag>
+                      <span class="solicitado-em">
+                        {{
+                          consultaPagamento.dataHoraConsulta
+                            | date: "dd/MM/yyyy - HH:mm"
+                        }}
+                      </span>
+                    </div>
+                  </div>
+                  <p-button
+                    label="Ver"
+                    icon="fa fa-eye"
+                    severity="secondary"
+                    (click)="acessarConsulta()"
+                  />
+                </div>
+              } @else {
+                <span class="sem-resultados">
+                  Nenhuma consulta para esse pagamento!
+                </span>
+              }
+            </p-fieldset>
           </section>
         </p-tabpanel>
         <p-tabpanel [value]="1">
-          <section class="comprovante-pagamento">
-            @if (pagamentoSelecionado.statusPagamento === "REPROVADO") {
-              <p-fieldset legend="Motivo da Reprovação" [toggleable]="true">
-                <div class="input-group">
-                  <label for="motivo"
-                    >O atendente:
-                    {{ informacoesComprovante?.atendente }} reprova o pagamento,
-                    pois:
-                  </label>
-                  <textarea
-                    name="motivo"
-                    id="motivo"
-                    pTextarea
-                    rows="5"
-                    [value]="informacoesComprovante?.motivoIndeferimento"
-                    disabled
-                  ></textarea>
+          <section class="acoes-pagamento">
+            @if (pagamentoAprovado) {
+              <div class="aviso aprovado">
+                <i class="fa fa-circle-check"></i>
+                <div>
+                  <strong>Pagamento aprovado</strong>
+                  <span>
+                    Este pagamento já foi quitado, não há nada a fazer por aqui.
+                  </span>
                 </div>
-              </p-fieldset>
-              <hr />
-            }
-            <p-inputgroup>
-              <p-inputgroup-addon>
-                <i [ngClass]="iconePagamento(novaFormaPagamento)"></i>
-              </p-inputgroup-addon>
-              <p-select
-                [options]="formasPagamento"
-                appendTo="body"
-                optionLabel="label"
-                optionValue="value"
-                placeholder="Forma de Pagamento"
-                [(ngModel)]="novaFormaPagamento"
-                [disabled]="pagamentoSelecionado.statusPagamento === 'APROVADO'"
-              />
-              <p-inputgroup-addon>
+              </div>
+            } @else {
+              <div class="input-group">
+                <label for="formaPagamento">Forma de Pagamento:</label>
+                <p-inputgroup>
+                  <p-inputgroup-addon>
+                    <i [ngClass]="iconePagamento(novaFormaPagamento)"></i>
+                  </p-inputgroup-addon>
+                  <p-select
+                    id="formaPagamento"
+                    [options]="formasPagamento"
+                    appendTo="body"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Forma de Pagamento"
+                    [(ngModel)]="novaFormaPagamento"
+                  />
+                  <p-inputgroup-addon>
+                    <p-button
+                      pTooltip="Salvar forma de pagamento"
+                      severity="info"
+                      [icon]="
+                        alterandoFormaPagamento
+                          ? 'pi pi-spin pi-spinner'
+                          : 'fa fa-edit'
+                      "
+                      [disabled]="!podeAlterarFormaPagamento"
+                      (click)="alterarFormaPagamento()"
+                    />
+                  </p-inputgroup-addon>
+                </p-inputgroup>
+                <span class="ajuda">
+                  Escolha uma forma diferente e confirme no botão ao lado para
+                  salvar a alteração.
+                </span>
+              </div>
+              @if (pagamentoCartao) {
                 <p-button
-                  pTooltip="Alterar Forma Pagamento"
-                  severity="info"
-                  icon="fa fa-edit"
+                  label="Realizar Pagamento"
+                  severity="success"
+                  icon="fa far fa-credit-card"
+                  fluid
                   [disabled]="
-                    pagamentoSelecionado.statusPagamento === 'APROVADO' ||
-                    novaFormaPagamento === pagamentoSelecionado.tipoPagamento
+                    novaFormaPagamento !== pagamentoSelecionado.tipoPagamento
                   "
-                  (click)="alterarFormaPagamento()"
-                />
-              </p-inputgroup-addon>
-            </p-inputgroup>
-            @if (pagamentoCartao) {
-              <p-button label="Realizar Pagamento" [disabled]="pagamentoSelecionado === null || pagamentoSelecionado.statusPagamento === 'APROVADO'" severity="success" icon="fa far fa-credit-card" fluid (click)="realizarPagamento()"></p-button>
+                  (click)="realizarPagamento()"
+                ></p-button>
+                @if (
+                  novaFormaPagamento !== pagamentoSelecionado.tipoPagamento
+                ) {
+                  <span class="ajuda">
+                    Salve a alteração da forma de pagamento para liberar o
+                    pagamento online.
+                  </span>
+                }
+              } @else {
+                <div class="aviso neutro">
+                  <i class="fa fa-circle-info"></i>
+                  <div>
+                    <strong>Pagamento presencial</strong>
+                    <span>
+                      Pagamentos em Pix ou dinheiro são acertados diretamente na
+                      clínica. Para pagar por aqui, altere a forma de pagamento
+                      para Cartão.
+                    </span>
+                  </div>
+                </div>
+              }
             }
           </section>
         </p-tabpanel>

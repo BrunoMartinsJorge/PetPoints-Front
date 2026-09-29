@@ -270,7 +270,59 @@
             }
           </div>
 
+          <div class="input-group">
+            <label
+              [class.invalid-data]="
+                !maiorIdade && formulario.get('dataNascimento')?.touched
+              "
+            >
+              Data de Nascimento
+            </label>
+            <p-datepicker
+              [invalid]="
+                !maiorIdade && formulario.get('dataNascimento')?.touched
+              "
+              placeholder="Data de Nascimento"
+              formControlName="dataNascimento"
+              dateFormat="dd/mm/yy"
+              fluid
+              [maxDate]="dataMaxima"
+              appendTo="body"
+            />
+            @if (!maiorIdade && formulario.get("dataNascimento")?.touched) {
+              <span class="invalid-data">
+                Valor inválido na data de nascimento!
+              </span>
+            }
+          </div>
+
           @if (veterinario) {
+            <div class="input-group">
+              <label
+                [class.invalid-data]="
+                  formulario.get('crmv')?.invalid &&
+                  formulario.get('crmv')?.touched
+                "
+              >
+                CRMV
+              </label>
+              <input
+                type="text"
+                pInputText
+                formControlName="crmv"
+                placeholder="CRMV do Veterinário..."
+                [invalid]="
+                  formulario.get('crmv')?.invalid &&
+                  formulario.get('crmv')?.touched
+                "
+              />
+              @if (
+                formulario.get("crmv")?.invalid &&
+                formulario.get("crmv")?.touched
+              ) {
+                <span class="invalid-data">Insira o CRMV!</span>
+              }
+            </div>
             <div class="input-group">
               <label
                 [class.invalid-data]="
@@ -298,32 +350,6 @@
               }
             </div>
           }
-
-          <div class="input-group">
-            <label
-              [class.invalid-data]="
-                !maiorIdade && formulario.get('dataNascimento')?.touched
-              "
-            >
-              Data de Nascimento
-            </label>
-            <p-datepicker
-              [invalid]="
-                !maiorIdade && formulario.get('dataNascimento')?.touched
-              "
-              placeholder="Data de Nascimento"
-              formControlName="dataNascimento"
-              dateFormat="dd/mm/yy"
-              fluid
-              [maxDate]="dataMaxima"
-              appendTo="body"
-            />
-            @if (!maiorIdade && formulario.get("dataNascimento")?.touched) {
-              <span class="invalid-data">
-                Valor inválido na data de nascimento!
-              </span>
-            }
-          </div>
         </div>
       </p-fieldset>
       <p-fieldset

@@ -36,7 +36,6 @@ export class TokenService {
   public get getTokenPayload(): TokenModel | null {
     const token = this.decodeToken(this.getToken || '');
     if (!token) return null;
-    console.log(token);
     
     return {
       email: token.sub,

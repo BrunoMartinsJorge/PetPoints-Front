@@ -36,6 +36,30 @@ export class RegistrarFuncionario implements OnInit {
 
   ngOnInit(): void {
     this.buscarEspecializacoes();
+    this.formulario.get('permissao')?.valueChanges.subscribe((permissao) => {
+      const crmv = this.formulario.get('crmv');
+      const especializacao = this.formulario.get('especializacao');
+
+      if (!crmv) return;
+
+      if (permissao === 'V') {
+        crmv.addValidators(Validators.required);
+      } else {
+        crmv.removeValidators(Validators.required);
+      }
+      
+      crmv.updateValueAndValidity();
+      
+      if (!especializacao) return
+
+      if (permissao === 'V') {
+        especializacao.addValidators(Validators.required);
+      } else {
+        especializacao.removeValidators(Validators.required);
+      }
+
+      especializacao.updateValueAndValidity();
+    });
   }
 
   private gerarRelatorio(): FormGroup {
@@ -49,6 +73,7 @@ export class RegistrarFuncionario implements OnInit {
       dataNascimento: new FormControl('', [Validators.required]),
       permissao: new FormControl('', [Validators.required]),
       especializacao: new FormControl(''),
+      crmv: new FormControl(''),
     });
   }
 
@@ -82,6 +107,7 @@ export class RegistrarFuncionario implements OnInit {
       dataNascimento: funcionario.dataNascimento,
       permissao: funcionario.permissao,
       especializacao: funcionario.especializacao || null,
+      crmv: funcionario.crmv || null,
     };
     this.service.cadastrarFuncionario(payload).subscribe({
       next: () => {

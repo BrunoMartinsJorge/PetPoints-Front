@@ -75,6 +75,10 @@ export class HistoricoConsultas {
     return status === StatusConsultaEnum.PENDENTE || status === StatusConsultaEnum.APROVADA;
   }
 
+  public podeReagendar(status: MinhasConsultasDto['statusConsulta']): boolean {
+    return status === StatusConsultaEnum.PENDENTE || status === StatusConsultaEnum.APROVADA;
+  }
+
   public pegarIniciais(nome: string): string {
     const limpo = (nome ?? '').trim();
     if (!limpo) return '';

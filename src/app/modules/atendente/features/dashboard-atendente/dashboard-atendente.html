@@ -37,12 +37,8 @@
             @for (consulta of consultas; track consulta.id) {
               <div [ngClass]="'card-consulta ' + consulta.status.toLowerCase()">
                 <div class="badges">
-                  <span [ngClass]="'status ' + consulta.status.toLowerCase()">
-                    {{ consulta.status | titlecase }}
-                  </span>
-                  <span class="tipo-consulta">
-                    {{ consulta.tipoConsulta }}
-                  </span>
+                  <app-bag-status-consulta [status]="consulta.status"></app-bag-status-consulta>
+                  <p-tag [value]="consulta.tipoConsulta" severity="secondary"></p-tag>
                 </div>
                 <div class="informacoes">
                   <div>

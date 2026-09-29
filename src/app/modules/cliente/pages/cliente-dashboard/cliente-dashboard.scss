@@ -4,7 +4,6 @@ main {
   gap: 1rem;
   flex-wrap: wrap;
 
-  /* Cada p-fieldset é um card flexível do grid do dashboard */
   p-fieldset {
     flex: 1 1 calc(50% - 0.5rem);
     min-width: 300px;
@@ -15,7 +14,6 @@ main {
   }
 }
 
-/* ---------- Elementos comuns ---------- */
 .sem-resultados {
   display: block;
   padding: 1rem;
@@ -23,7 +21,6 @@ main {
   color: var(--color-sub-text);
 }
 
-/* Badge de status reutilizado nos cards */
 %status-badge {
   color: var(--color-text);
   font-weight: 600;
@@ -34,7 +31,6 @@ main {
   white-space: nowrap;
 }
 
-/* ---------- Consultas Agendadas ---------- */
 .lista-consultas {
   display: flex;
   flex-direction: column;
@@ -164,7 +160,6 @@ main {
   }
 }
 
-/* ---------- Pagamentos Pendentes/Atrasados ---------- */
 .lista-pagamentos {
   display: flex;
   flex-wrap: wrap;
@@ -261,7 +256,6 @@ main {
   }
 }
 
-/* ---------- Atendimentos Pendentes ---------- */
 .lista-atendimentos {
   display: flex;
   flex-direction: column;

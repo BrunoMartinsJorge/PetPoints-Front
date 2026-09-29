@@ -17,10 +17,11 @@ import type { SolicitacaoRemovidaDto } from '../chat-atendimento/models/Solicita
 import { AtendimentosAtendenteeService } from '../chat-atendimento/services/atendimentos-atendentee-service';
 import type { ChatAtendimentoDto } from '../chat-atendimento/models/ChatAtendimentoDto';
 import { CardResumo } from '../../../../shared/components/card-resumo/card-resumo';
+import { BagStatusConsulta } from "../../../../shared/components/bag-status-consulta/bag-status-consulta";
 
 @Component({
   selector: 'app-dashboard-atendente',
-  imports: [PrimeNGModule, CardResumo],
+  imports: [PrimeNGModule, CardResumo, BagStatusConsulta],
   templateUrl: './dashboard-atendente.html',
   styleUrl: './dashboard-atendente.scss',
 })

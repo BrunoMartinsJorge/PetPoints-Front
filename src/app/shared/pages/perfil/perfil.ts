@@ -33,10 +33,10 @@ import type { LogDto } from '../../../modules/gerente/pages/logs-sistema/models/
 import type { MovimentacoesDto } from '../../../modules/gerente/pages/movimentacoes-clinica/model/MovimentacoesDto';
 import { LogsService } from '../../../modules/gerente/pages/logs-sistema/service/logs-service';
 import { MovimentacoesClinicaService } from '../../../modules/gerente/pages/movimentacoes-clinica/service/movimentacoes-clinica-service';
-import { BagLog } from "../../../modules/gerente/pages/logs-sistema/components/bag-log/bag-log";
+import { BagLog } from '../../../modules/gerente/pages/logs-sistema/components/bag-log/bag-log';
 import { AgendaConsultas } from '../../components/agenda-consultas/agenda-consultas';
 import { urlArquivo } from '../../utils/imagem-url';
-import { BagStatusConsulta } from "../../components/bag-status-consulta/bag-status-consulta";
+import { BagStatusConsulta } from '../../components/bag-status-consulta/bag-status-consulta';
 
 @Component({
   selector: 'app-perfil',
@@ -48,8 +48,8 @@ import { BagStatusConsulta } from "../../components/bag-status-consulta/bag-stat
     BagTipoMovimentacao,
     BagLog,
     AgendaConsultas,
-    BagStatusConsulta
-],
+    BagStatusConsulta,
+  ],
   providers: [ConfirmationService, MessageService],
   templateUrl: './perfil.html',
   styleUrl: './perfil.scss',
@@ -67,7 +67,9 @@ export class Perfil implements OnInit {
   );
   private readonly clienteService = inject(MeusPagamentosService);
   private readonly gerenteLogsService = inject(LogsService);
-  private readonly gerenteMovimentacoesService = inject(MovimentacoesClinicaService);
+  private readonly gerenteMovimentacoesService = inject(
+    MovimentacoesClinicaService,
+  );
 
   public readonly tiposGeneros = GeneroEnumOpcoesFormulario;
   public informacoesUsuario!: FormGroup;
@@ -99,6 +101,8 @@ export class Perfil implements OnInit {
 
   public movimentacoes: MovimentacoesDto[] = [];
   public carregandoMovimentacoes = false;
+
+  public dataMaxima = new Date();
 
   public pagamentosPendentes: RelatorioFinanceiroClienteDto = {
     pagamentosPendentes: 0,
@@ -180,6 +184,19 @@ export class Perfil implements OnInit {
     }
   }
 
+  public get maiorIdade(): boolean {
+    const dataNascimento: Date = this.informacoesUsuario.get('dataNascimento')?.value;
+    if (!dataNascimento) return false;
+    const hoje = new Date();
+    const limite = new Date(
+      hoje.getFullYear() - 18,
+      hoje.getMonth(),
+      hoje.getDate(),
+    );
+
+    return dataNascimento <= limite;
+  }
+
   public get getImagemUsuario(): string {
     const token = this.tokenService.getToken;
     if (!token) return '';
@@ -207,7 +224,7 @@ export class Perfil implements OnInit {
   }
 
   /**
-   * 
+   *
    * @description Metodo responsável por buscar as informações do ranking de avaliação de atendentes e veterinários
    */
   private buscarInformacoesRankingAvaliacoes(): void {
@@ -230,7 +247,7 @@ export class Perfil implements OnInit {
   }
 
   /**
-   * 
+   *
    * @description - Metodo responsável por selecionar um pagamento e redirecionar o cliente para a tela de pagamentos
    * @param {PagamentosDto} pagamento - Pagamento selecionado
    */

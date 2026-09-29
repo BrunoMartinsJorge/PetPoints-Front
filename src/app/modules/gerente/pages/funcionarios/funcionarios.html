@@ -85,10 +85,15 @@
           <section class="lista-funcionarios">
             @for (funcionario of items; track funcionario.id) {
               <div
-                [class]="'card-funcionario ' + funcionario.statusPerfil.toLowerCase()"
+                [class]="
+                  'card-funcionario ' + funcionario.statusPerfil.toLowerCase()
+                "
               >
                 <div class="imagem-funcionario">
-                  <img [src]="getImagemFuncionario(funcionario)" alt="Imagem do funcionário">
+                  <img
+                    [src]="getImagemFuncionario(funcionario)"
+                    alt="Imagem do funcionário"
+                  />
                 </div>
                 <div class="informacoes">
                   <div class="header">
@@ -99,10 +104,10 @@
                     >
                   </div>
                   <div class="outras">
-                    <span class="tipo-funcionario">{{
-                      funcionario.permissao
-                    }}</span>
-                    <span class="status">{{ funcionario.statusPerfil }}</span>
+                    <p-tag [value]="funcionario.permissao" severity="secondary"></p-tag>
+                    <app-bag-status-perfil
+                      [status]="funcionario.statusPerfil"
+                    ></app-bag-status-perfil>
                     <app-genero-bag
                       [genero]="funcionario.genero"
                     ></app-genero-bag>
@@ -110,8 +115,23 @@
                     <span>Registrado em {{ funcionario.dataCadastro }}</span>
                   </div>
                 </div>
-                <button pButton [severity]="'info'" icon="fa fa-send" [disabled]="funcionario.statusPerfil === 'DESATIVADO'" (click)="acessarChatInterno(funcionario.id)">Enviar Mensagem</button>
-                <button pButton [severity]="'secondary'" icon="fa fa-user" (click)="acessarDetalhesFuncionario(funcionario.id)">Acessar Perfil</button>
+                <button
+                  pButton
+                  [severity]="'info'"
+                  icon="fa fa-send"
+                  [disabled]="funcionario.statusPerfil === 'DESATIVADO'"
+                  (click)="acessarChatInterno(funcionario.id)"
+                >
+                  Enviar Mensagem
+                </button>
+                <button
+                  pButton
+                  [severity]="'secondary'"
+                  icon="fa fa-user"
+                  (click)="acessarDetalhesFuncionario(funcionario.id)"
+                >
+                  Acessar Perfil
+                </button>
               </div>
             }
           </section>

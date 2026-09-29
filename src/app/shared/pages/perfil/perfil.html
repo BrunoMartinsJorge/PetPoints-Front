@@ -1,8 +1,9 @@
-<p-toast 
-    [showTransformOptions]="'translateY(100%)'" 
-    [showTransitionOptions]="'500ms'" 
-    [hideTransitionOptions]="'1000ms'" 
-    [showTransformOptions]="'translateX(100%)'" />
+<p-toast
+  [showTransformOptions]="'translateY(100%)'"
+  [showTransitionOptions]="'500ms'"
+  [hideTransitionOptions]="'1000ms'"
+  [showTransformOptions]="'translateX(100%)'"
+/>
 <p-confirmdialog>
   <ng-template pTemplate="message">
     <div class="mensagem-desativacao">
@@ -60,6 +61,8 @@
                 [fileLimit]="1"
                 accept="image/*"
                 maxFileSize="1000000"
+                invalidFileSizeMessageDetail="A imagem é muito maior do que o permitido!"
+                invalidFileSizeMessageSummary="A imagem é muito maior do que o permitido!"
                 (onSelect)="carregarArquivo($event)"
                 [auto]="true"
                 [disabled]="!podeEditar"
@@ -90,16 +93,33 @@
             />
           </div>
           <div class="input-group">
-            <label for="dataNascimento">Data de Nascimento</label>
+            <label
+              for="dataNascimento"
+              [class.invalid-data]="
+                !maiorIdade && informacoesUsuario.get('dataNascimento')?.touched
+              "
+            >
+              Data de Nascimento
+            </label>
             <p-datepicker
+              [invalid]="
+                !maiorIdade && informacoesUsuario.get('dataNascimento')?.touched
+              "
+              placeholder="Data de Nascimento"
               formControlName="dataNascimento"
-              appendTo="body"
-              [disabled]="!podeEditar"
+              fluid
               inputId="dataNascimento"
-              dateFormat="dd/mm/yy"
-              [fluid]="true"
-              [showIcon]="true"
+              [maxDate]="dataMaxima"
+              [disabled]="!podeEditar"
+              appendTo="body"
             />
+            @if (
+              !maiorIdade && informacoesUsuario.get("dataNascimento")?.touched
+            ) {
+              <span class="invalid-data">
+                Valor inválido na data de nascimento!
+              </span>
+            }
           </div>
           <div class="input-group">
             <label for="email">Email</label>
@@ -331,148 +351,151 @@
 
   <ng-template #avaliacoesFuncionarioView>
     <section class="informacoes-atendente">
-        @if (carregandoConsultasAtendenteVeterinario) {
-          <p-skeleton width="calc(75% - 0.5rem)" height="360px"></p-skeleton>
-        } @else if (getTipoUsuario === "VETERINARIO") {
-          <p-fieldset legend="Agenda de Consultas">
-            <app-agenda-consultas
-              [consultas]="consultasAtendenteVeterinario"
-            ></app-agenda-consultas>
-          </p-fieldset>
-        } @else {
-          <p-fieldset legend="Consultas Aprovadas/Reprovadas">
-            <p-dataview
-              #dv
-              [value]="consultasAtendenteVeterinario"
-              [paginator]="true"
-              [rows]="4"
-            >
-              <ng-template #list let-consultas>
-                <div class="lista-consultas">
-                  @for (consulta of consultas; track consulta.id) {
-                    <div
-                      [ngClass]="
-                        'card-consulta ' + consulta.status.toLowerCase()
-                      "
-                    >
-                      <div class="badges">
-                        <app-bag-status-consulta [status]="consulta.status"></app-bag-status-consulta>
-                        <p-tag [value]="consulta.tipoConsulta" severity="secondary"></p-tag>
+      @if (carregandoConsultasAtendenteVeterinario) {
+        <p-skeleton width="calc(75% - 0.5rem)" height="360px"></p-skeleton>
+      } @else if (getTipoUsuario === "VETERINARIO") {
+        <p-fieldset legend="Agenda de Consultas">
+          <app-agenda-consultas
+            [consultas]="consultasAtendenteVeterinario"
+          ></app-agenda-consultas>
+        </p-fieldset>
+      } @else {
+        <p-fieldset legend="Consultas Aprovadas/Reprovadas">
+          <p-dataview
+            #dv
+            [value]="consultasAtendenteVeterinario"
+            [paginator]="true"
+            [rows]="4"
+          >
+            <ng-template #list let-consultas>
+              <div class="lista-consultas">
+                @for (consulta of consultas; track consulta.id) {
+                  <div
+                    [ngClass]="'card-consulta ' + consulta.status.toLowerCase()"
+                  >
+                    <div class="badges">
+                      <app-bag-status-consulta
+                        [status]="consulta.status"
+                      ></app-bag-status-consulta>
+                      <p-tag
+                        [value]="consulta.tipoConsulta"
+                        severity="secondary"
+                      ></p-tag>
+                    </div>
+                    <div class="informacoes">
+                      <div>
+                        <span class="info">
+                          <i class="fa fas fa-user"></i>
+                          {{ consulta.cliente }}
+                        </span>
+                        <span class="info">
+                          <i class="fa fas fa-paw"></i>
+                          {{ consulta.pet }}
+                        </span>
+                        <span class="data-consulta">
+                          <i class="fa fas fa-calendar"></i>
+                          {{
+                            consulta.dataHoraConsulta
+                              | date: "dd/MM/yyyy - HH:mm"
+                          }}
+                        </span>
                       </div>
-                      <div class="informacoes">
-                        <div>
-                          <span class="info">
-                            <i class="fa fas fa-user"></i>
-                            {{ consulta.cliente }}
-                          </span>
-                          <span class="info">
-                            <i class="fa fas fa-paw"></i>
-                            {{ consulta.pet }}
-                          </span>
-                          <span class="data-consulta">
-                            <i class="fa fas fa-calendar"></i>
-                            {{
-                              consulta.dataHoraConsulta
-                                | date: "dd/MM/yyyy - HH:mm"
-                            }}
-                          </span>
-                        </div>
-                        <p-button
-                          icon="fa fa-eye"
-                          severity="secondary"
-                          (click)="selecionarConsulta(consulta)"
-                        />
+                      <p-button
+                        icon="fa fa-eye"
+                        severity="secondary"
+                        (click)="selecionarConsulta(consulta)"
+                      />
+                    </div>
+                    @if (
+                      consulta.status === "CANCELADA" ||
+                      consulta.status === "REPROVADA"
+                    ) {
+                      <div class="cancelada-indeferida">
+                        <span>
+                          {{ gerarTextoCancelamentoIndeferimento(consulta) }}
+                        </span>
                       </div>
-                      @if (
-                        consulta.status === "CANCELADA" ||
-                        consulta.status === "REPROVADA"
-                      ) {
-                        <div class="cancelada-indeferida">
-                          <span>
-                            {{ gerarTextoCancelamentoIndeferimento(consulta) }}
-                          </span>
+                    }
+                  </div>
+                }
+              </div>
+            </ng-template>
+            <ng-template #emptymessage>
+              <span class="sem-resultados">Nenhuma consulta encontrada!</span>
+            </ng-template>
+          </p-dataview>
+        </p-fieldset>
+      }
+      @if (carregandoRankingAvaliacao) {
+        <p-skeleton width="calc(25% - 0.5rem)" height="360px"> </p-skeleton>
+      } @else {
+        <p-fieldset legend="Minhas Avaliações">
+          <div class="pontuacao">
+            @if (rankingAvaliacao !== null) {
+              <div class="card-avaliacoes">
+                @if (rankingAvaliacao.classificacao) {
+                  <div class="banner-ranking">
+                    <div class="medalha">
+                      <i class="fa fas fa-award"></i>
+                    </div>
+                    <div class="texto">
+                      <span class="titulo">
+                        <strong
+                          >{{ rankingAvaliacao.classificacao }}º Lugar</strong
+                        >
+                        no ranking
+                      </span>
+                      <span class="subtitulo">
+                        de atendimentos avaliados!
+                      </span>
+                    </div>
+                  </div>
+                }
+                <p-dataview
+                  #dv
+                  [value]="avaliacoes"
+                  [paginator]="true"
+                  [rows]="4"
+                >
+                  <ng-template #list let-avaliacoes>
+                    <div class="lista-avaliacoes">
+                      @for (avaliacao of avaliacoes; track avaliacao.id) {
+                        <div class="card-avaliacao">
+                          <div class="header">
+                            <span class="pontos">
+                              <i class="fa fas fa-star"></i>
+                              {{ avaliacao.pontuacao }}
+                              {{
+                                avaliacao.pontuacao === 1 ? "ponto" : "pontos"
+                              }}
+                            </span>
+                            <span class="data">{{ avaliacao.enviadoEm }}</span>
+                          </div>
+                          <p class="mensagem">{{ avaliacao.observacoes }}</p>
                         </div>
                       }
                     </div>
-                  }
+                  </ng-template>
+                  <ng-template #emptymessage>
+                    <span class="sem-resultados"
+                      >Nenhuma avaliação encontrada!</span
+                    >
+                  </ng-template>
+                </p-dataview>
+              </div>
+            } @else {
+              <div class="card-sem-avaliacoes">
+                <i class="fa fas far fa-star"></i>
+                <div class="infos">
+                  <h4>Você ainda não possui nenhum atendimento avaliado</h4>
+                  <span>Um cliente pode avaliar seu atendimento</span>
                 </div>
-              </ng-template>
-              <ng-template #emptymessage>
-                <span class="sem-resultados">Nenhuma consulta encontrada!</span>
-              </ng-template>
-            </p-dataview>
-          </p-fieldset>
-        }
-        @if (carregandoRankingAvaliacao) {
-          <p-skeleton width="calc(25% - 0.5rem)" height="360px"> </p-skeleton>
-        } @else {
-          <p-fieldset legend="Minhas Avaliações">
-            <div class="pontuacao">
-              @if (rankingAvaliacao !== null) {
-                <div class="card-avaliacoes">
-                  @if (rankingAvaliacao.classificacao) {
-                    <div class="banner-ranking">
-                      <div class="medalha">
-                        <i class="fa fas fa-award"></i>
-                      </div>
-                      <div class="texto">
-                        <span class="titulo">
-                          <strong
-                            >{{ rankingAvaliacao.classificacao }}º Lugar</strong
-                          >
-                          no ranking
-                        </span>
-                        <span class="subtitulo">
-                          de atendimentos avaliados!
-                        </span>
-                      </div>
-                    </div>
-                  }
-                  <p-dataview
-                    #dv
-                    [value]="avaliacoes"
-                    [paginator]="true"
-                    [rows]="4"
-                  >
-                    <ng-template #list let-avaliacoes>
-                      <div class="lista-avaliacoes">
-                        @for (avaliacao of avaliacoes; track avaliacao.id) {
-                          <div class="card-avaliacao">
-                            <div class="header">
-                              <span class="pontos">
-                                <i class="fa fas fa-star"></i>
-                                {{ avaliacao.pontuacao }}
-                                {{
-                                  avaliacao.pontuacao === 1 ? "ponto" : "pontos"
-                                }}
-                              </span>
-                              <span class="data">{{ avaliacao.enviadoEm }}</span>
-                            </div>
-                            <p class="mensagem">{{ avaliacao.observacoes }}</p>
-                          </div>
-                        }
-                      </div>
-                    </ng-template>
-                    <ng-template #emptymessage>
-                      <span class="sem-resultados"
-                        >Nenhuma avaliação encontrada!</span
-                      >
-                    </ng-template>
-                  </p-dataview>
-                </div>
-              } @else {
-                <div class="card-sem-avaliacoes">
-                  <i class="fa fas far fa-star"></i>
-                  <div class="infos">
-                    <h4>Você ainda não possui nenhum atendimento avaliado</h4>
-                    <span>Um cliente pode avaliar seu atendimento</span>
-                  </div>
-                </div>
-              }
-            </div>
-          </p-fieldset>
-        }
-      </section>
+              </div>
+            }
+          </div>
+        </p-fieldset>
+      }
+    </section>
   </ng-template>
 
   @switch (getTipoUsuario) {
@@ -640,3 +663,34 @@
     }
   }
 </main>
+
+<!-- 
+prescricao.numero
+prescricao.veterinario.nome
+prescricao.veterinario.crmv
+
+prescricao.animal.nome
+prescricao.animal.especie
+prescricao.animal.raca
+prescricao.animal.sexo
+prescricao.animal.idade
+
+prescricao.tutor.nome
+prescricao.tutor.cpf
+prescricao.tutor.telefone
+
+prescricao.diagnostico
+
+prescricao.itens[]
+    item.medicamento
+    item.apresentacao
+    item.dose
+    item.via
+    item.intervalo
+    item.duracao
+
+prescricao.orientacoes
+prescricao.dataReavaliacao
+prescricao.local
+prescricao.data
+-->

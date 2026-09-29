@@ -319,10 +319,10 @@
   <hr />
   <p-button
     label="Finalizar Atendimento"
-    icon="fa fa-check-circle"
+    [icon]="enviandoAvaliacao ? 'pi pi-spin pi-spinner' : 'fa fa-check-circle'"
     severity="danger"
     fluid
-    [disabled]="!podeAvaliarAtendimento"
+    [disabled]="!podeAvaliarAtendimento || enviandoAvaliacao"
     (click)="finalizarAtendimento()"
   ></p-button>
 </p-dialog>

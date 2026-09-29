@@ -11,4 +11,5 @@ export interface NovoFuncionarioForm {
     dataNascimento: Date;
     permissao: TiposFuncionarios;
     especializacao: number | null;
+    crmv: string | null;
 }

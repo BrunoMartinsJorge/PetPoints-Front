@@ -71,20 +71,18 @@
                   </div>
                   <div class="body-card">
                     <div class="badges">
-                      <span
-                        [ngClass]="
-                          'status-pagamento ' +
-                          (pagamento.atrasado
-                            ? 'atrasado'
-                            : pagamento.statusPagamento.toLowerCase())
-                        "
-                      >
-                        {{
+                      <p-tag
+                        [severity]="pagamento.atrasado ? 'danger' : 'warn'"
+                        [value]="pagamento.atrasado ? 'Atrasado' : 'Em Tempo'"
+                        [icon]="
                           pagamento.atrasado
-                            ? "ATRASADO"
-                            : (pagamento.statusPagamento | titlecase)
-                        }}
-                      </span>
+                            ? 'fa fas fa-calendar-times'
+                            : 'fa far fa-clock'
+                        "
+                      ></p-tag>
+                      <app-bag-status-pagamento
+                        [status]="pagamento.statusPagamento"
+                      ></app-bag-status-pagamento>
                     </div>
                     <p-button
                       icon="fa fa-eye"
@@ -259,7 +257,6 @@
 </main>
 <app-detalhes-pagamento
   [pagamentoSelecionado]="pagamentoSelecionado"
-  [visibilidade]="visibilidadeDialogDetalhesPagamento"
   [(visibilidade)]="visibilidadeDialogDetalhesPagamento"
   (alteracoesEfetuadas)="carregarAlteracoes()"
 ></app-detalhes-pagamento>

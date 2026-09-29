@@ -39,6 +39,8 @@ export class ChatAtendimentoCliente implements OnInit, OnDestroy {
   public buscaAtendimentos = '';
   private readonly avataresSemImagem = new Set<number>();
 
+  public enviandoAvaliacao = false;
+
   public avaliacaoAtendimento = {
     pontuacao: 0,
     observacoes: '',
@@ -183,7 +185,8 @@ export class ChatAtendimentoCliente implements OnInit, OnDestroy {
   }
 
   public finalizarAtendimento(): void {
-    if (!this.chatSelecionado) return;
+    if (!this.chatSelecionado || !this.podeAvaliarAtendimento) return;
+    this.enviandoAvaliacao = true;
     const payload: AvaliacaoForm = {
       pontuacao: this.avaliacaoAtendimento.pontuacao,
       observacoes: this.avaliacaoAtendimento.observacoes,
@@ -200,6 +203,10 @@ export class ChatAtendimentoCliente implements OnInit, OnDestroy {
             summary: 'Finalizado',
             detail: 'Seu atendimento foi finalizado com sucesso!.',
           });
+          this.enviandoAvaliacao = false;
+        },
+        error: () => {
+          this.enviandoAvaliacao = false;
         },
       });
   }
@@ -332,6 +339,6 @@ export class ChatAtendimentoCliente implements OnInit, OnDestroy {
 
   public get podeAvaliarAtendimento(): boolean {
     if (this.avaliacaoAtendimento == null || this.avaliacaoAtendimento.observacoes == null) return false;
-    return this.avaliacaoAtendimento.observacoes.trim().length > 0;
+    return this.avaliacaoAtendimento.observacoes.trim().length >= 10;
   }
 }

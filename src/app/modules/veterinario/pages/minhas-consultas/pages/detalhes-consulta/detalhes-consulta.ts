@@ -14,6 +14,8 @@ import type { ButtonSeverity } from 'primeng/button';
 import { MessageService } from 'primeng/api';
 import { ItensCobrancaConsulta } from '../../components/itens-cobranca-consulta/itens-cobranca-consulta';
 import type { ItemCobrancaForm } from '../../form/FinalizarConsultaForm';
+import type { ItemPrescricaoForm } from '../../form/PrescricaoForm';
+import { ItensPrescricaoConsulta } from '../../components/itens-prescricao-consulta/itens-prescricao-consulta';
 import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
 
 @Component({
@@ -26,6 +28,7 @@ import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
     RatingModule,
     BagStatusConsulta,
     ItensCobrancaConsulta,
+    ItensPrescricaoConsulta,
   ],
   templateUrl: './detalhes-consulta.html',
   styleUrl: './detalhes-consulta.scss',
@@ -45,6 +48,13 @@ export class DetalhesConsulta implements OnInit {
 
   public itensCobranca: ItemCobrancaForm[] = [];
   public finalizandoConsulta = false;
+
+  public visibilidadePrescricao = false;
+  public diagnosticoPrescricao = '';
+  public orientacoesPrescricao = '';
+  public dataRetornoPrescricao: Date | null = null;
+  public itensPrescricao: ItemPrescricaoForm[] = [];
+  public gerandoPrescricao = false;
 
   public ngOnInit(): void {
     this.pegarIdConsulta();
@@ -146,6 +156,71 @@ export class DetalhesConsulta implements OnInit {
 
   public get valorConsulta(): number {
     return this.informacoesConsulta?.valorConsulta ?? 0;
+  }
+
+  public abrirDialogPrescricao(): void {
+    this.visibilidadePrescricao = true;
+    this.diagnosticoPrescricao = '';
+    this.orientacoesPrescricao = '';
+    this.dataRetornoPrescricao = null;
+    this.itensPrescricao = [];
+  }
+
+  public fecharDialogPrescricao(): void {
+    if (this.gerandoPrescricao) return;
+    this.visibilidadePrescricao = false;
+    this.itensPrescricao = [];
+  }
+
+  public get podeGerarPrescricao(): boolean {
+    return (
+      this.diagnosticoPrescricao.trim().length > 0 && !this.gerandoPrescricao
+    );
+  }
+
+  /**
+   * O backend espera um LocalDateTime, então a data escolhida no calendário é
+   * enviada sem fuso horário.
+   */
+  private converterRetornoParaLocalDateTime(data: Date | null): string | null {
+    if (data === null) return null;
+    const doisDigitos = (valor: number): string =>
+      valor.toString().padStart(2, '0');
+    const dia = `${data.getFullYear()}-${doisDigitos(data.getMonth() + 1)}-${doisDigitos(data.getDate())}`;
+    const horario = `${doisDigitos(data.getHours())}:${doisDigitos(data.getMinutes())}:00`;
+    return `${dia}T${horario}`;
+  }
+
+  public gerarPrescricao(): void {
+    if (!this.idConsultaSelecionada || !this.podeGerarPrescricao) return;
+    this.gerandoPrescricao = true;
+    this.service
+      .gerarPrescricao({
+        idConsulta: Number(this.idConsultaSelecionada),
+        diagnostico: this.diagnosticoPrescricao.trim(),
+        observacoes: this.orientacoesPrescricao.trim(),
+        itens: this.itensPrescricao,
+        retorno: this.converterRetornoParaLocalDateTime(
+          this.dataRetornoPrescricao,
+        ),
+      })
+      .subscribe({
+        next: (response: Blob) => {
+          const arquivo = new Blob([response], { type: 'application/pdf' });
+          window.open(URL.createObjectURL(arquivo));
+          this.toast.add({
+            severity: 'success',
+            summary: 'Prescrição gerada',
+            detail: 'A prescrição da consulta foi gerada!',
+          });
+          this.gerandoPrescricao = false;
+          this.visibilidadePrescricao = false;
+          this.itensPrescricao = [];
+        },
+        error: () => {
+          this.gerandoPrescricao = false;
+        },
+      });
   }
 
   public enviarFinalizarConsulta(): void {

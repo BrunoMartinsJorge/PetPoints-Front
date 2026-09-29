@@ -15,7 +15,7 @@ import { providePrimeNG } from 'primeng/config';
 import { tokenApiInterceptor } from './core/interceptors/token-api-interceptor';
 import { responseApiInterceptor } from './core/interceptors/response-api-interceptor';
 import { MessageService } from 'primeng/api';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import Aura from '@primeuix/themes/aura';
 
 import { definePreset } from '@primeuix/themes';
@@ -52,7 +52,8 @@ const MinhaPaleta = definePreset(Aura, {
 export const appConfig: ApplicationConfig = {
   providers: [
     MessageService,
-    provideAnimations(),
+    // { provide: LOCALE_ID, useValue: 'pt-BR' },
+    provideAnimationsAsync(),
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(
       withFetch(),
@@ -66,6 +67,52 @@ export const appConfig: ApplicationConfig = {
         options: {
           darkModeSelector: '.dark',
         },
+      },
+      translation: {
+        accept: 'Aceitar',
+        reject: 'Rejeitar',
+        dayNames: [
+          'Domingo',
+          'Segunda-feira',
+          'Terça-feira',
+          'Quarta-feira',
+          'Quinta-feira',
+          'Sexta-feira',
+          'Sábado',
+        ],
+        dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+        dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+        monthNames: [
+          'Janeiro',
+          'Fevereiro',
+          'Março',
+          'Abril',
+          'Maio',
+          'Junho',
+          'Julho',
+          'Agosto',
+          'Setembro',
+          'Outubro',
+          'Novembro',
+          'Dezembro',
+        ],
+        monthNamesShort: [
+          'Jan',
+          'Fev',
+          'Mar',
+          'Abr',
+          'Mai',
+          'Jun',
+          'Jul',
+          'Ago',
+          'Set',
+          'Out',
+          'Nov',
+          'Dez',
+        ],
+        today: 'Hoje',
+        clear: 'Limpar',
+        weekHeader: 'Sm',
       },
     }),
   ],

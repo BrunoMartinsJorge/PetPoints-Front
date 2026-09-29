@@ -19,10 +19,11 @@ import type { NovoProdutoForm } from './forms/NovoProdutoForm';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import type { EditarProdutoForm } from './forms/EditarProdutoForm';
 import { CardResumo } from '../../../../shared/components/card-resumo/card-resumo';
+import { BagTipoProduto } from '../../../../shared/components/bag-tipo-produto/bag-tipo-produto';
 
 @Component({
   selector: 'app-estoque-estoquista',
-  imports: [PrimeNGModule, ToggleButtonModule, SkeletonModule, CardResumo],
+  imports: [PrimeNGModule, ToggleButtonModule, SkeletonModule, CardResumo, BagTipoProduto],
   templateUrl: './estoque-estoquista.html',
   styleUrl: './estoque-estoquista.scss',
 })

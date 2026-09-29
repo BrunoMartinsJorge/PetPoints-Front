@@ -60,6 +60,10 @@ export class ConsultasClinicaService {
     return this.http.put<DetalhesTipoConsultaDto>(`${this.URL}/editar-informacoes-tipo-consulta/${idTipoConsulta}`, valoresEdicao);
   }
 
+  public editarInformacoesEspecializacao(valoresEdicao: EspecializacaoForm, idEspecializacao: number): Observable<DetalhesTipoConsultaDto> {
+    return this.http.put<DetalhesTipoConsultaDto>(`${this.URL}/editar-informacoes-especializacao/${idEspecializacao}`, valoresEdicao);
+  }
+
   public buscarVeterinariosAdicionar(idTipoConsulta: number): Observable<VeterinarioEspecializacoesDto[]>{
     return this.http.get<VeterinarioEspecializacoesDto[]>(`${this.URL}/buscar-veterinarios-adicionar/${idTipoConsulta}`);
   }
@@ -90,5 +94,13 @@ export class ConsultasClinicaService {
 
   public removerVeterinarioEspecializacao(idEspecializacao: number, idVeterinario: number): Observable<void> {
     return this.http.delete<void>(`${this.URL}/especializacoes/${idEspecializacao}/${idVeterinario}`, {});
+  }
+
+  public excluirEspecializacao(idEspecializacao: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/especializacoes/${idEspecializacao}`);
+  }
+
+  public excluirTipoConsulta(idTipoConsulta: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/tipos-consulta/${idTipoConsulta}`);
   }
 }

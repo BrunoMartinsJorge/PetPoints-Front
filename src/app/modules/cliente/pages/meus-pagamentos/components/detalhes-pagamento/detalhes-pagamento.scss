@@ -4,115 +4,165 @@ hr {
   margin: 1rem 0;
 }
 
-section.informacoes-pagamento {
-  .informacoes {
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Bloco de destaque usado para reprovação, aprovação e orientações. */
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  border-left-width: 5px;
+  color: var(--color-text);
+
+  i {
+    font-size: 1.1em;
+    margin-top: 0.15rem;
+  }
+
+  div {
     display: flex;
     flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  span {
+    font-size: 0.9em;
+  }
+
+  &.reprovado {
+    border-color: var(--bag-reprovado);
+    background-color: var(--bag-reprovado-foreground);
+
+    i,
+    strong {
+      color: var(--bag-reprovado);
+    }
+  }
+
+  &.aprovado {
+    border-color: var(--aprovado);
+    background-color: var(--aprovado-foreground);
+
+    i,
+    strong {
+      color: var(--aprovado);
+    }
+  }
+
+  &.neutro {
+    border-color: var(--bag-iniciado);
+    background-color: var(--bag-iniciado-foreground);
+
+    i,
+    strong {
+      color: var(--bag-iniciado);
+    }
+  }
+}
+
+section.informacoes-pagamento {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text);
+
+  .aviso {
+    margin-bottom: 1rem;
+  }
+
+  .resumo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 1rem;
 
-    #info {
-      border-bottom: 1px solid var(--color-border);
+    .valor {
       display: flex;
-      gap: 1rem;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 0.15rem;
+
+      .rotulo {
+        font-size: 0.8em;
+        color: var(--color-sub-text);
+      }
+
+      strong {
+        font-size: 1.6em;
+        line-height: 1.1;
+      }
+    }
+
+    .badges {
+      display: flex;
       flex-wrap: wrap;
-
-      span {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
+      gap: 0.5rem;
     }
   }
-  .badges {
+
+  ul.dados {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-direction: column;
+    gap: 0.35rem;
 
-    span.status-pagamento {
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid var(--color-border);
-      font-weight: 600;
-      font-size: 0.8em;
-      right: 0;
-      position: relative;
-      float: right;
+    li {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+      font-size: 0.9em;
 
-      &.atrasado,
-      &.reprovado {
-        border-color: var(--bag-reprovado);
-        color: var(--bag-reprovado);
-        background-color: var(--bag-reprovado-foreground);
-      }
-
-      &.em-tempo,
-      &.pendente {
-        border-color: var(--bag-pendente);
-        color: var(--bag-pendente);
-        background-color: var(--bag-pendente-foreground);
-      }
-
-      &.enviado {
-        border-color: var(--bag-iniciado);
-        color: var(--bag-iniciado);
-        background-color: var(--bag-iniciado-foreground);
-      }
-
-      &.aprovado {
-        border-color: var(--aprovado);
-        color: var(--aprovado);
-        background-color: var(--aprovado-foreground);
-      }
-    }
-    span {
-      padding: 0.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 0.8em;
-      &.em-tempo {
-        border: 1px solid var(--bag-pendente);
-        color: var(--bag-pendente);
-        background-color: var(--bag-pendente-foreground);
-      }
-
-      &.atrasado {
-        border: 1px solid var(--bag-reprovado);
-        color: var(--bag-reprovado);
-        background-color: var(--bag-reprovado-foreground);
+      span:first-child {
+        font-weight: 600;
       }
     }
   }
+
   div.consulta-card {
-    cursor: pointer;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--color-border);
     align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
     border-radius: 4px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 5px solid var(--color-card-primary);
 
-    &:nth-child(even) {
-      border-left: 5px solid var(--color-card-secondary);
-    }
-
-    hr {
-      margin: 0.25rem 0;
+    .dados-consulta {
+      min-width: 200px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
     }
 
     .body-card {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      padding: 0;
-      gap: 1rem;
-      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    span.veterinario {
+      font-size: 0.9rem;
+    }
+
+    .rodape-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem;
 
       span.tipo-consulta {
         font-size: 0.8rem;
@@ -120,42 +170,31 @@ section.informacoes-pagamento {
         border: 1px solid var(--color-border);
         border-radius: 4px;
         padding: 0.25rem 0.5rem;
-        margin: 0;
       }
-    }
 
-    div span.solicitado-em {
-      font-size: 0.8rem;
+      span.solicitado-em {
+        font-size: 0.8rem;
+        color: var(--color-sub-text);
+      }
     }
   }
 }
 
-section.comprovante-pagamento {
+section.acoes-pagamento {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  color: var(--color-text);
 
-  p {
-    text-align: center;
-    font-weight: 600;
-    font-size: 1.2em;
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
   }
 
-  .informacoes-comprovante {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-
-    span {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
-      right: 0;
-      float: right;
-    }
+  .ajuda {
+    font-size: 0.85em;
+    color: var(--color-sub-text);
   }
 }

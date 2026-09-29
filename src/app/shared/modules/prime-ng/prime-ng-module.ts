@@ -123,8 +123,6 @@ import { BagFormaPagamento } from '../../components/bag-forma-pagamento/bag-form
     BagStatusAtendimento,
     BagFormaPagamento,
   ],
-  declarations: [
-    
-  ]
+  declarations: [],
 })
 export class PrimeNGModule {}

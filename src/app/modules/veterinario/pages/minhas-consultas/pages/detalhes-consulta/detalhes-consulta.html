@@ -398,15 +398,18 @@
       informacoesConsulta.status === "FINALIZADO"
     ) {
       <p-button
-        label="Gerar Prescrição"
+        [label]="gerandoPrescricao ? 'Gerando Prescrição...' : 'Gerar Prescrição'"
         severity="secondary"
         fluid
         [icon]="
-          carregandoInformacoesConsulta ? 'pi pi-spin pi-spinner' : 'pi pi-file'
+          carregandoInformacoesConsulta || gerandoPrescricao
+            ? 'pi pi-spin pi-spinner'
+            : 'pi pi-file'
         "
         rounded="true"
         outlined="true"
-        (click)="iniciarOuFinalizarConsulta()"
+        [disabled]="carregandoInformacoesConsulta || gerandoPrescricao"
+        (click)="abrirDialogPrescricao()"
       />
     }
   </section>
@@ -456,6 +459,87 @@
       size="small"
       (click)="fecharDialogFinalizarConsulta()"
       [disabled]="finalizandoConsulta"
+    ></p-button>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="visibilidadePrescricao"
+  header="Gerar Prescrição"
+  [modal]="true"
+  [draggable]="false"
+  [closable]="false"
+  [style]="{ minWidth: '300px', maxWidth: '800px', width: '100%' }"
+>
+  <p style="text-align: center; color: var(--color-text); margin: 2rem">
+    Informe os dados da receita do pet. O documento será gerado em PDF e ficará
+    registrado na consulta.
+  </p>
+  <hr />
+  <div class="campos-prescricao">
+    <div class="input-group">
+      <label for="diagnosticoPrescricao">Diagnóstico / Indicação:</label>
+      <textarea
+        id="diagnosticoPrescricao"
+        name="diagnosticoPrescricao"
+        pTextarea
+        [(ngModel)]="diagnosticoPrescricao"
+        rows="2"
+        placeholder="Descreva o diagnóstico ou a indicação clínica"
+        fluid
+      ></textarea>
+    </div>
+    <div class="input-group">
+      <label for="orientacoesPrescricao">Orientações ao Tutor:</label>
+      <textarea
+        id="orientacoesPrescricao"
+        name="orientacoesPrescricao"
+        pTextarea
+        [(ngModel)]="orientacoesPrescricao"
+        rows="2"
+        placeholder="Cuidados, alimentação, restrições e demais recomendações"
+        fluid
+      ></textarea>
+    </div>
+    <div class="input-group">
+      <label for="retornoPrescricao">Retorno / Reavaliação:</label>
+      <p-datepicker
+        id="retornoPrescricao"
+        [(ngModel)]="dataRetornoPrescricao"
+        [showTime]="true"
+        [showIcon]="true"
+        [showButtonBar]="true"
+        dateFormat="dd/mm/yy"
+        placeholder="Data prevista para reavaliação"
+        appendTo="body"
+        fluid
+      ></p-datepicker>
+    </div>
+  </div>
+  <hr />
+  @if (visibilidadePrescricao) {
+    <app-itens-prescricao-consulta
+      (itensAlterados)="itensPrescricao = $event"
+    ></app-itens-prescricao-consulta>
+  }
+  <div class="botoes-dialog">
+    <p-button
+      [label]="gerandoPrescricao ? 'Gerando...' : 'Gerar Prescrição'"
+      fluid
+      [icon]="gerandoPrescricao ? 'pi pi-spin pi-spinner' : 'pi pi-file'"
+      severity="success"
+      size="small"
+      (click)="gerarPrescricao()"
+      [disabled]="!podeGerarPrescricao"
+    ></p-button>
+    <p-button
+      label="Cancelar"
+      fluid
+      icon="pi pi-times"
+      severity="secondary"
+      size="small"
+      (click)="fecharDialogPrescricao()"
+      [disabled]="gerandoPrescricao"
     ></p-button>
   </div>
 </p-dialog>

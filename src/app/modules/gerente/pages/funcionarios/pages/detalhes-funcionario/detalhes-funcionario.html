@@ -117,7 +117,7 @@
                   "
                 >
                   <div class="body-card">
-                    <span class="tipo-consulta">{{ consulta.tipo }}</span>
+                    <p-tag [value]="consulta.tipo" severity="secondary"></p-tag>
                     <app-bag-status-consulta
                       [status]="consulta.status"
                     ></app-bag-status-consulta>

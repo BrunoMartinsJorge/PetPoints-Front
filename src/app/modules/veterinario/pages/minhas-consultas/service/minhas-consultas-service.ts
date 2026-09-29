@@ -6,6 +6,7 @@ import type { ConsultaAtualDto } from '../model/ConsultaAtualDto';
 import type { InformacoesConsultaSelecionadaDto } from '../pages/detalhes-consulta/model/InformacoesConsultaSelecionadaDto';
 import type { ProdutoCobrancaDto } from '../model/ProdutoCobrancaDto';
 import type { FinalizarConsultaForm } from '../form/FinalizarConsultaForm';
+import type { PrescricaoForm } from '../form/PrescricaoForm';
 
 @Injectable({
   providedIn: 'root',
@@ -47,5 +48,11 @@ export class MinhasConsultasService {
     form: FinalizarConsultaForm,
   ): Observable<void> {
     return this.http.put<void>(`${this.URL}/finalizar/${idConsulta}`, form);
+  }
+
+  public gerarPrescricao(form: PrescricaoForm): Observable<Blob> {
+    return this.http.post(`${this.URL}/prescricao`, form, {
+      responseType: 'blob',
+    });
   }
 }
