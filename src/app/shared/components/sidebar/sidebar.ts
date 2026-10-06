@@ -127,7 +127,6 @@ export class Sidebar {
     const token = this.tokenService.getToken;
     if (!token) return '';
     const idUsuario = this.tokenService.decodeToken(token).id_usuario;
-    console.log('idUsuario', idUsuario);
     return idUsuario !== ''
       ? environment.apiUrl + '/arquivos/usuario/' + idUsuario
       : '';

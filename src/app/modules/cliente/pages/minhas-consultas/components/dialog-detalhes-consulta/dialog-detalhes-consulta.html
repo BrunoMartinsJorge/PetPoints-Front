@@ -206,7 +206,7 @@
               severity="info"
             ></p-button>
           }
-          @if (pagamento.formaPagamento === "CARTAO") {
+          @if (getFormaPagamentoAtual === "CARTAO") {
             <p-button
               label="Realizar Pagamento"
               [disabled]="
