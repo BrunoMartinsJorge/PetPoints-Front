@@ -301,3 +301,19 @@ main {
     }
   }
 }
+
+.motivo {
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.motivo-indeferimento {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  textarea {
+    resize: none;
+    min-height: 150px;
+  }
+}

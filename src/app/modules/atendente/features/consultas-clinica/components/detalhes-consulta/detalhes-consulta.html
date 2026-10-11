@@ -89,28 +89,28 @@
           <p-tabpanel [value]="0">
             <div class="campos">
               <div class="campo">
-                <label>Tipo de consulta</label>
+                <label for="tipoConsulta">Tipo de consulta</label>
                 <div class="valor-campo">
                   <i class="fa fa-stethoscope"></i>
                   <span>{{ consultaSelecionada.tipoConsulta }}</span>
                 </div>
               </div>
               <div class="campo">
-                <label>Solicitado em</label>
+                <label for="solicitadoEm">Solicitado em</label>
                 <div class="valor-campo">
                   <i class="fa fa-clock"></i>
                   <span>{{ consultaSelecionada.solicitadoEm }}</span>
                 </div>
               </div>
               <div class="campo">
-                <label>Data da consulta</label>
+                <label for="dataConsulta">Data da consulta</label>
                 <div class="valor-campo">
                   <i class="fa fa-calendar"></i>
                   <span>{{ consultaSelecionada.dataConsulta }}</span>
                 </div>
               </div>
               <div class="campo">
-                <label>Deferido em</label>
+                <label for="deferidoEm">Deferido em</label>
                 <div
                   class="valor-campo"
                   [class.vazio]="!consultaSelecionada.deferidoEm"
@@ -121,7 +121,7 @@
                 </div>
               </div>
               <div class="campo">
-                <label>Iniciada em</label>
+                <label for="iniciadoEm">Iniciada em</label>
                 <div
                   class="valor-campo"
                   [class.vazio]="!consultaSelecionada.iniciadoEm"
@@ -132,7 +132,7 @@
                 </div>
               </div>
               <div class="campo">
-                <label>Finalizada em</label>
+                <label for="finalizadoEm">Finalizada em</label>
                 <div
                   class="valor-campo"
                   [class.vazio]="!consultaSelecionada.finalizadoEm"
@@ -144,7 +144,7 @@
               </div>
               @if (consultaCancelada) {
                 <div class="campo">
-                  <label>Cancelada em</label>
+                  <label for="canceladoEm">Cancelada em</label>
                   <div
                     class="valor-campo"
                     [class.vazio]="!consultaSelecionada.canceladoEm"
@@ -219,20 +219,20 @@
 
               <div class="campos">
                 <div class="campo">
-                  <label>Forma de pagamento</label>
+                  <label for="formaPagamento">Forma de pagamento</label>
                   <div class="valor-campo">
                     <i [ngClass]="iconePagamento(pagamento.formaPagamento)"></i>
                     <span>{{ pagamento.formaPagamento | titlecase }}</span>
                   </div>
                 </div>
                 <div class="campo">
-                  <label>Emitida em</label>
+                  <label for="emitidoEm">Emitida em</label>
                   <div class="valor-campo" [class.vazio]="!pagamento.emitidoEm">
                     <span>{{ pagamento.emitidoEm || "Não informado" }}</span>
                   </div>
                 </div>
                 <div class="campo">
-                  <label>Data limite</label>
+                  <label for="dataLimite">Data limite</label>
                   <div
                     class="valor-campo"
                     [class.vazio]="!pagamento.dataLimite"
@@ -242,13 +242,13 @@
                   </div>
                 </div>
                 <div class="campo">
-                  <label>Pago em</label>
+                  <label for="pagoEm">Pago em</label>
                   <div class="valor-campo" [class.vazio]="!pagamentoPago">
                     <span>{{ pagamento.pagoEm || "Ainda não pago" }}</span>
                   </div>
                 </div>
                 <div class="campo">
-                  <label>Avaliado por</label>
+                  <label for="avaliadoPor">Avaliado por</label>
                   <div
                     class="valor-campo"
                     [class.vazio]="!pagamento.avaliadoPor"

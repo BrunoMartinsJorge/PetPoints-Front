@@ -108,7 +108,7 @@ export class ChatAtendimentoCliente implements OnInit, OnDestroy {
     }
   }
 
-  public urlAvatar(idUsuario: number | undefined): string {
+  public urlAvatar(idUsuario: number | undefined): string {    
     return environment.apiUrl + '/arquivos/usuario/' + idUsuario;
   }
 

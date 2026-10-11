@@ -35,8 +35,8 @@ import { LogsService } from '../../../modules/gerente/pages/logs-sistema/service
 import { MovimentacoesClinicaService } from '../../../modules/gerente/pages/movimentacoes-clinica/service/movimentacoes-clinica-service';
 import { BagLog } from '../../../modules/gerente/pages/logs-sistema/components/bag-log/bag-log';
 import { AgendaConsultas } from '../../components/agenda-consultas/agenda-consultas';
-import { urlArquivo } from '../../utils/imagem-url';
 import { BagStatusConsulta } from '../../components/bag-status-consulta/bag-status-consulta';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-perfil',
@@ -198,9 +198,9 @@ export class Perfil implements OnInit {
   }
 
   public get getImagemUsuario(): string {
-    const token = this.tokenService.getToken;
+    const token = this.tokenService.getTokenPayload;
     if (!token) return '';
-    return urlArquivo(this.tokenService.decodeToken(token).imagem);
+    return environment.apiUrl + '/arquivos/usuario/' + token.idUsuario;
   }
 
   public get getTipoUsuario(): string {
