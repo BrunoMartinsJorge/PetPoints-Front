@@ -66,11 +66,10 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 50%;
-    border: 1px solid var(--color-border);
-    background-color: var(--color-hover);
     color: var(--color-card-primary);
     transition: background-color 0.2s ease;
+    border: none;
+    background-color: transparent;
 
     &:hover {
       background-color: var(--card-hover);
@@ -78,7 +77,6 @@
   }
 }
 
-/* ---------------------------------------------------- avatares reutilizáveis */
 
 .avatar {
   width: 40px;

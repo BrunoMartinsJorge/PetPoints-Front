@@ -6,7 +6,6 @@ import { BadgeModule } from 'primeng/badge';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
 import { TokenService } from '../../../core/services/token-service';
 import { PrimeNGModule } from '../../modules/prime-ng/prime-ng-module';
-import { ThemeService } from '../../../core/services/theme-service';
 import { RotasService } from '../../../core/services/rotas-service';
 import type { ListOfRoutes, RoutesModel } from '../../models/RoutesModel';
 import { NotificacoesWsService } from '../../services/ws/notificacoes-ws-service';
@@ -27,7 +26,6 @@ export class Sidebar {
 
   private readonly tokenService = inject(TokenService);
   private readonly router = inject(Router);
-  private readonly themeService = inject(ThemeService);
   private readonly rotasService = inject(RotasService);
   private readonly notificacoesWs = inject(NotificacoesWsService);
 
@@ -126,6 +124,8 @@ export class Sidebar {
   private get getImagemUsuario(): string {
     const token = this.tokenService.getToken;
     if (!token) return '';
+    const possuiImagem = this.tokenService.decodeToken(token).imagem !== "";
+    if (!possuiImagem) return '';
     const idUsuario = this.tokenService.decodeToken(token).id_usuario;
     return idUsuario !== ''
       ? environment.apiUrl + '/arquivos/usuario/' + idUsuario
