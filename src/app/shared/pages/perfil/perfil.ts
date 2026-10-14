@@ -199,7 +199,7 @@ export class Perfil implements OnInit {
 
   public get getImagemUsuario(): string {
     const token = this.tokenService.getTokenPayload;
-    if (!token) return '';
+    if (!token || token.imagem == "") return '';
     return environment.apiUrl + '/arquivos/usuario/' + token.idUsuario;
   }
 

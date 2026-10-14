@@ -9,11 +9,6 @@ import { GeneroEnum } from '../../../../../shared/models/enums/GeneroEnum';
 import type { FileSelectEvent} from 'primeng/fileupload';
 import { FileUploadModule } from 'primeng/fileupload';
 
-/*interface UploadEvent {
-    originalEvent: Event;
-    files: File[];
-}*/
-
 @Component({
   selector: 'app-register-form',
   imports: [PrimeNGModule, StepperModule, FileUploadModule],
@@ -121,6 +116,9 @@ export class RegisterForm {
         this.tokenService.loadToken();
         this.carregandoRegistro = false;
       },
+      error: () => {
+        this.carregandoRegistro = false;
+      }
     });
   }
 }
