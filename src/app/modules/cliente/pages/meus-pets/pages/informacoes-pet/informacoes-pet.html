@@ -9,17 +9,21 @@
           <div class="imagem">
             <app-imagem
               tipo="pet"
-              width="100"
+              width="150"
+              height="150"
               [urlImagem]="getUrlImagem(petSelecionado)"
               [alt]="petSelecionado.nome"
               [preview]="true"
+              [imagemRedonda]="false"
             ></app-imagem>
           </div>
           <div class="dados">
-            <div>
+            <div id="info-top">
               <h3>{{ petSelecionado.nome }}</h3>
               <div class="bags">
-                <app-bag-status-perfil [status]="petSelecionado.status"></app-bag-status-perfil>
+                <app-bag-status-perfil
+                  [status]="petSelecionado.status"
+                ></app-bag-status-perfil>
                 <app-tipo-pet-bag
                   [tipo]="petSelecionado.tipo"
                 ></app-tipo-pet-bag>
@@ -30,7 +34,49 @@
             </div>
             <hr />
             <div class="dados-informacoes">
-              <span><strong>Raça:</strong> <p-tag [value]="petSelecionado.raca" severity="secondary"></p-tag></span>
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                  <i class="fa-regular fa-address-card"></i>
+                </p-inputgroup-addon>
+                <input
+                  pInputText
+                  fluid
+                  [(ngModel)]="petSelecionado.raca"
+                  placeholder="Raça do Pet"
+                  readonly
+                />
+              </p-inputgroup>
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                  <i class="fa-solid fa-cake-candles"></i>
+                </p-inputgroup-addon>
+                <input
+                  pInputText
+                  fluid
+                  [(ngModel)]="petSelecionado.dataNascimento"
+                  placeholder="Data de Nascimento do Pet"
+                  readonly
+                />
+              </p-inputgroup>
+              <p-inputgroup>
+                <p-inputgroup-addon>
+                  <i class="fa-regular fa-calendar-days"></i>
+                </p-inputgroup-addon>
+                <input
+                  pInputText
+                  fluid
+                  [(ngModel)]="petSelecionado.dataRegistro"
+                  placeholder="Data de Registro do Pet"
+                  readonly
+                />
+              </p-inputgroup>
+              <!-- <span
+                ><strong>Raça: </strong>
+                <p-tag
+                  [value]="petSelecionado.raca"
+                  severity="secondary"
+                ></p-tag
+              ></span>
               <div class="datas">
                 <span
                   ><strong>Data de Nascimento:</strong>
@@ -40,7 +86,7 @@
                   ><strong>Data de Registro:</strong>
                   {{ petSelecionado.dataRegistro }}</span
                 >
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -99,7 +145,10 @@
                     <strong
                       >Veterinário: {{ consulta.veterinarioConsulta }}</strong
                     >
-                    <p-tag [value]="consulta.tipoConsulta" severity="secondary"></p-tag>
+                    <p-tag
+                      [value]="consulta.tipoConsulta"
+                      severity="secondary"
+                    ></p-tag>
                   </div>
                   <hr />
                   <div>
@@ -138,6 +187,7 @@
                   <app-imagem
                     tipo="pet"
                     width="100"
+                    [height]="'100'"
                     [imagemRedonda]="false"
                     [urlImagem]="getUrlImagem(pet)"
                     [alt]="pet.nome"

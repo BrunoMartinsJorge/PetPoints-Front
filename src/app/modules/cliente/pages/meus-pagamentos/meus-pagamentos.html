@@ -80,9 +80,9 @@
                             : 'fa far fa-clock'
                         "
                       ></p-tag>
-                      <app-bag-status-pagamento
+                      <!-- <app-bag-status-pagamento
                         [status]="pagamento.statusPagamento"
-                      ></app-bag-status-pagamento>
+                      ></app-bag-status-pagamento> -->
                     </div>
                     <p-button
                       icon="fa fa-eye"
@@ -220,9 +220,9 @@
                   </div>
                   <div class="body-card">
                     <div class="badges">
-                      <app-bag-status-pagamento
+                      <!-- <app-bag-status-pagamento
                         [status]="pagamento.statusPagamento"
-                      ></app-bag-status-pagamento>
+                      ></app-bag-status-pagamento> -->
                       @if (pagamento.statusPagamento !== "APROVADO") {
                         <p-tag
                           [severity]="pagamento.atrasado ? 'danger' : 'warn'"

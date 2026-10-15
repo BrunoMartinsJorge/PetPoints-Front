@@ -18,38 +18,27 @@ import { BagStatusPagamento } from "../../../../shared/components/bag-status-pag
   styleUrl: './meus-pagamentos.scss',
 })
 export class MeusPagamentos implements OnInit {
-  // Variavel responsável por conter o acesso ao service do componente em questão com acesso as requests de endpoint
   private readonly service = inject(MeusPagamentosService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
-  // Variavel responsável por armazenar as informacoes dos cards
   public informacoesCards: CardsPagamentoDto = {
     pagamentosEfetuados: 0,
     pagamentosPendentes: 0,
     pagamentosAtrasados: 0,
   };
-  // Variavel responsável por delimitar o carregamento dos cards
   public carregandoInformacoesCards = false;
 
-  // Variaveis responsaveis por armazenar os pagamentos
   public pagamentosPendentesAtrasados: PagamentosDto[] = [];
-  // Variavel responsável por delimitar o carregamento dos pagamentos pendentes ou atrasados
   public carregandoPagamentosPendentesAtrasados = false;
 
-  // Variaveis responsaveis por armazenar os pagamentos
   public pagamentosReprovados: PagamentosDto[] = [];
-  // Variavel responsável por delimitar o carregamento dos pagamentos reprovados
   public carregandoPagamentosReprovados = false;
 
-  // Variaveis responsaveis por armazenar os pagamentos
   public historicoPagamentos: PagamentosDto[] = [];
-  // Variavel responsável por delimitar o carregamento dos pagamentos com status finalizado ou enviado
   public carregandoHistoricoPagamentos = false;
 
-  // Variavel responsável por armazenar o pagamento selecionado
   public pagamentoSelecionado: PagamentosDto | null = null;
-  // Variavel responsável por deteriminar a visibilidade do dialog que mostra as informações do pagamento selecionado
   public visibilidadeDialogDetalhesPagamento = false;
 
   ngOnInit(): void {
@@ -200,5 +189,6 @@ export class MeusPagamentos implements OnInit {
   public selecionarPagamento(pagamento: PagamentosDto): void {
     this.pagamentoSelecionado = pagamento;
     this.visibilidadeDialogDetalhesPagamento = true;
+    console.log(pagamento);
   }
 }

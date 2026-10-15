@@ -10,9 +10,14 @@ import { PrimeNGModule } from "../../modules/prime-ng/prime-ng-module";
   styleUrl: './bag-status-pagamento.scss',
 })
 export class BagStatusPagamento {
-  @Input() public status: StatusPagamentoEnum = StatusPagamentoEnum.PENDENTE;
+  @Input() public status: StatusPagamentoEnum | undefined | null = StatusPagamentoEnum.PENDENTE;
 
   public get getTagData(): TagData {
+    if (this.status == undefined || this.status == null) return {
+      label: 'Indefinido',
+      severity: 'secondary',
+      icon: 'fa fa-question',
+    }
     return getTagDataPagamentos(this.status);
   }
 }
