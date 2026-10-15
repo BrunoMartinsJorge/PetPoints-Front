@@ -25,6 +25,8 @@ import {
 } from 'primeng/stepper';
 import type { NovoPetForm } from './form/NovoPetForm';
 import { MessageService } from 'primeng/api';
+import { urlArquivo } from '../../utils/imagem-url';
+import { Imagem } from '../../components/imagem/imagem';
 
 @Component({
   selector: 'app-pets-clinica',
@@ -37,7 +39,8 @@ import { MessageService } from 'primeng/api';
     Step,
     StepPanel,
     StepPanels,
-  ],
+    Imagem
+],
   templateUrl: './pets-clinica.html',
   styleUrl: './pets-clinica.scss',
 })
@@ -232,5 +235,9 @@ export class PetsClinica implements OnInit {
         this.buscarPets();
       },
     });
+  }
+
+  public urlImagem(uuid: string | null | undefined): string {
+    return urlArquivo(uuid);
   }
 }

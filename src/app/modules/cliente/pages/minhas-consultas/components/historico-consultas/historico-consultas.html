@@ -57,7 +57,13 @@
             <div class="consulta-card">
               <div class="header-card">
                 <div class="infos">
-                  <div class="iniciais">{{ pegarIniciais(consulta.petConsulta) }}</div>
+                  <app-imagem
+                    class="foto-pet"
+                    tipo="pet"
+                    width="50"
+                    [urlImagem]="urlImagem(consulta.imagemPet)"
+                    [alt]="'Foto de ' + consulta.petConsulta"
+                  ></app-imagem>
                   <div class="base">
                     <h4>{{ consulta.petConsulta }}</h4>
                     <p>{{ consulta.tipoConsulta }}</p>

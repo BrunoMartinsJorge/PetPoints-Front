@@ -26,6 +26,8 @@ export class MeusPets {
   public pets: MeuPetDto[] = [];
   public petsFiltrados: MeuPetDto[] = [];
   public consultas: MeuPetConsultaDto[] = [];
+  public carregandoPets = false;
+  public carregandoConsultas = false;
 
   public termoBusca = '';
   public filtroSelecionado = 'TODOS';
@@ -81,10 +83,15 @@ export class MeusPets {
    */
   private buscarMeusPets(): void {
     this.pets = [];
+    this.carregandoPets = true;
     this.service.buscarMeusPets().subscribe({
       next: (res: MeuPetDto[]) => {
         this.pets = res;
         this.aplicarFiltros();
+        this.carregandoPets = false;
+      },
+      error: () => {
+        this.carregandoPets = false;
       },
     });
   }
@@ -95,9 +102,14 @@ export class MeusPets {
    */
   private buscarAsConsultasDeMeusPets(): void {
     this.consultas = [];
+    this.carregandoConsultas = true;
     this.service.buscarAsConsultasDeMeusPets().subscribe({
       next: (res: MeuPetConsultaDto[]) => {
         this.consultas = res;
+        this.carregandoConsultas = false;
+      },
+      error: () => {
+        this.carregandoConsultas = false;
       },
     });
   }

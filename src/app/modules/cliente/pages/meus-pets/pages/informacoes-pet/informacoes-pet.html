@@ -70,23 +70,6 @@
                   readonly
                 />
               </p-inputgroup>
-              <!-- <span
-                ><strong>Raça: </strong>
-                <p-tag
-                  [value]="petSelecionado.raca"
-                  severity="secondary"
-                ></p-tag
-              ></span>
-              <div class="datas">
-                <span
-                  ><strong>Data de Nascimento:</strong>
-                  {{ petSelecionado.dataNascimento }}</span
-                >
-                <span
-                  ><strong>Data de Registro:</strong>
-                  {{ petSelecionado.dataRegistro }}</span
-                >
-              </div> -->
             </div>
           </div>
         </div>
@@ -124,6 +107,9 @@
       </div>
     </p-fieldset>
     <p-fieldset legend="Consultas do Pet" [toggleable]="false">
+      @if (carregandoConsultas) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview [value]="consultasPet" [rows]="4" [paginator]="true">
         <ng-template #list let-consultas>
           <div class="lista-consultas">
@@ -174,10 +160,14 @@
           <span class="sem-resultados">Nenhuma consulta encontrada!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
   </section>
   <section>
     <p-fieldset legend="Pets Relacionados" [toggleable]="false">
+      @if (carregandoPetsRelacionados) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview [value]="petsRelacionados" [rows]="4" [paginator]="true">
         <ng-template #list let-pets>
           <div class="lista-pets-relacionados">
@@ -214,6 +204,7 @@
           <span class="sem-resultados">Pet relacionado encontrada!</span>
         </ng-template>
       </p-dataview>
+    }
     </p-fieldset>
   </section>
 </main>

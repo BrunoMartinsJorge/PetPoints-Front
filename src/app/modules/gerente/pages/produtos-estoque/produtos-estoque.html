@@ -68,6 +68,7 @@
     </div>
   </p-fieldset>
   <p-table
+    [loading]="carregandoProdutos"
     [value]="produtosFiltrados"
     [paginator]="true"
     [rows]="12"
@@ -95,7 +96,7 @@
         <td>{{ produto.nome }}</td>
         <td>{{ produto.descricao }}</td>
         <td>R$ {{ produto.valorUnitario }}</td>
-        <td>{{ produto.tipo }}</td>
+        <td><app-bag-tipo-produto [tipoProduto]="produto.tipo"></app-bag-tipo-produto></td>
         <td>{{ produto.quantidadeEstoque }} Unidade(s)</td>
       </tr>
     </ng-template>

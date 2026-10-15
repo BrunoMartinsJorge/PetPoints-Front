@@ -11,4 +11,5 @@ export interface PetsDto {
     id: number;
     nome: string;
   };
+  imagem: string | null;
 }

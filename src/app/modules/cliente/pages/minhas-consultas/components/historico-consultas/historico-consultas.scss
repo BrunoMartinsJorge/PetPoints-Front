@@ -68,15 +68,9 @@
           flex-wrap: wrap;
           gap: 1rem;
 
-          .iniciais {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--color-border);
-            background-color: var(--color-hover);
+          .foto-pet {
+            flex-shrink: 0;
+            line-height: 0;
           }
 
           .base {

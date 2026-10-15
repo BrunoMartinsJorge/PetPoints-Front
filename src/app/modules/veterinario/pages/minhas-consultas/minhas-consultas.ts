@@ -4,6 +4,8 @@ import { PrimeNGModule } from '../../../../shared/modules/prime-ng/prime-ng-modu
 import { MinhasConsultasService } from './service/minhas-consultas-service';
 import { BagStatusConsulta } from '../../../../shared/components/bag-status-consulta/bag-status-consulta';
 import { GeneroBag } from '../../../../shared/components/genero-bag/genero-bag';
+import { Imagem } from '../../../../shared/components/imagem/imagem';
+import { urlArquivo } from '../../../../shared/utils/imagem-url';
 import { ConfirmationService } from 'primeng/api';
 import type { ConsultaVeterinarioDto } from './model/ConsultaVeterinarioDto';
 import type { ConsultaAtualDto } from './model/ConsultaAtualDto';
@@ -18,6 +20,7 @@ import type { ItemCobrancaForm } from './form/FinalizarConsultaForm';
     BagStatusConsulta,
     GeneroBag,
     ItensCobrancaConsulta,
+    Imagem,
   ],
   templateUrl: './minhas-consultas.html',
   styleUrl: './minhas-consultas.scss',
@@ -86,11 +89,8 @@ export class MinhasConsultas implements OnInit {
     this.router.navigate(['/veterinario/detalhes-consulta', consulta.id])
   }
 
-  /**
-   * @description Inicial do nome do pet para o avatar (fallback "?")
-   */
-  public inicial(nome: string): string {
-    return nome?.trim().charAt(0).toUpperCase() || '?';
+  public urlImagem(uuid: string | null | undefined): string {
+    return urlArquivo(uuid);
   }
 
   public finalizarConsulta(): void {

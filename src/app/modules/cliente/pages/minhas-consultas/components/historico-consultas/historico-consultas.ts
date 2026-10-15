@@ -3,13 +3,15 @@ import { FormsModule } from '@angular/forms';
 import { PrimeNGModule } from '../../../../../../shared/modules/prime-ng/prime-ng-module';
 import { BagStatusConsulta } from '../../../../../../shared/components/bag-status-consulta/bag-status-consulta';
 import { SelectButton } from 'primeng/selectbutton';
+import { Imagem } from '../../../../../../shared/components/imagem/imagem';
+import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
 import type { OptionSelect } from '../../../../../../shared/models/OptionSelect';
 import { StatusConsultaEnum } from '../../../../../../shared/models/enums/StatusConsultaEnum';
 import type { MinhasConsultasDto } from '../../models/MinhasConsultasDto';
 
 @Component({
   selector: 'app-historico-consultas',
-  imports: [PrimeNGModule, FormsModule, BagStatusConsulta, SelectButton],
+  imports: [PrimeNGModule, FormsModule, BagStatusConsulta, SelectButton, Imagem],
   templateUrl: './historico-consultas.html',
   styleUrl: './historico-consultas.scss',
 })
@@ -79,9 +81,7 @@ export class HistoricoConsultas {
     return status === StatusConsultaEnum.PENDENTE || status === StatusConsultaEnum.APROVADA;
   }
 
-  public pegarIniciais(nome: string): string {
-    const limpo = (nome ?? '').trim();
-    if (!limpo) return '';
-    return limpo.substring(0, 2);
+  public urlImagem(uuid: string | null | undefined): string {
+    return urlArquivo(uuid);
   }
 }

@@ -31,6 +31,9 @@
   <hr />
   <section class="informacoes">
     <p-fieldset legend="Consultas do Dia">
+      @if (carregandoConsultas) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview #dv [value]="consultas" [paginator]="true" [rows]="6">
         <ng-template #list let-consultas>
           <div class="lista-consultas">
@@ -83,8 +86,12 @@
           <span class="sem-resultados">Nenhuma consulta encontrada!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
     <p-fieldset legend="Solicitações de Atendimentos">
+      @if (carregandoSolicitacoesAtendimentos) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview
         #dv
         [value]="listaSolicitacoesAtendimentos"
@@ -132,8 +139,12 @@
           <span class="sem-resultados">Nenhuma consulta encontrada!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
     <p-fieldset legend="Solicitações de Consultas">
+      @if (carregandoSolicitacoes) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview
         #dv
         [value]="solicitacoesConsultas"
@@ -212,6 +223,7 @@
           >
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
   </section>
 </main>

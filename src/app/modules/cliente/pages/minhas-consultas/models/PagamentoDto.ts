@@ -5,7 +5,7 @@ export interface PagamentoDto {
   id: number;
   formaPagamento: TipoPagamentoEnum;
   valor: number;
-  status: StatusPagamentoEnum;
+  statusPagamento: StatusPagamentoEnum;
   pixPagamento: PagamentoPixDto;
 }
 

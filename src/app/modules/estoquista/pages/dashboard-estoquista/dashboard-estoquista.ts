@@ -5,10 +5,11 @@ import { ChartModule } from 'primeng/chart';
 import type { HistoricoMovimentacoesMensaisDto } from './model/HistoricoMovimentacoesMensaisDto';
 import { PrimeNGModule } from '../../../../shared/modules/prime-ng/prime-ng-module';
 import type { ProdutoEstoqueDto } from '../../../../shared/models/ProdutoEstoqueDto';
+import { BagTipoProduto } from '../../../../shared/components/bag-tipo-produto/bag-tipo-produto';
 
 @Component({
   selector: 'app-dashboard-estoquista',
-  imports: [ChartModule, PrimeNGModule],
+  imports: [ChartModule, PrimeNGModule, BagTipoProduto],
   templateUrl: './dashboard-estoquista.html',
   styleUrl: './dashboard-estoquista.scss',
 })

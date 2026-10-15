@@ -1,4 +1,4 @@
-<p-toast/>
+<p-toast />
 <main>
   <p-fieldset legend="Filtros" [toggleable]="false">
     <div class="filtros">
@@ -98,7 +98,16 @@
           <section class="lista-pets">
             @for (pet of items; track pet.id) {
               <div [class]="'card-pets ' + pet.genero.toLowerCase()">
-                <div class="imagem-pet"></div>
+                <app-imagem
+                  tipo="usuario"
+                  [imagemRedonda]="false"
+                  [preview]="true"
+                  width="120"
+                  height="120"
+                  tipo="pet"
+                  [urlImagem]="urlImagem(pet.imagem)"
+                  [alt]="'Foto de ' + pet.nome"
+                ></app-imagem>
                 <div class="informacoes">
                   <div class="header">
                     <h3>{{ pet.nome }}</h3>
@@ -226,46 +235,46 @@
           <p-step-panel [value]="2">
             <ng-template #content let-activateCallback="activateCallback">
               <div class="inputs">
-                  <div class="input-group">
-                    <label for="idTutor">Tutor do Pet</label>
-                    <p-select
-                      appendTo="body"
-                      id="idTutor"
-                      formControlName="idTutor"
-                      placeholder="Selecione o tutor do pet"
-                      [options]="tutoresForm"
-                      optionLabel="label"
-                      optionValue="value"
-                      fluid
-                    >
-                    </p-select>
-                  </div>
-                  <div class="input-group">
-                    <label for="dataNascimento">Data de Nascimento</label>
-                    <p-datepicker
-                      id="dataNascimento"
-                      formControlName="dataNascimento"
-                      placeholder="Selecione a data de nascimento do pet"
-                      [showIcon]="true"
-                      yearRange="1900:2024"
-                      dateFormat="dd/mm/yy"
-                      appendTo="body"
-                      [maxDate]="dataLimiteNascimento"
-                      fluid
-                    >
-                    </p-datepicker>
-                  </div>
-                  <div class="input-group">
-                    <label for="observacoes">Observações</label>
-                    <textarea
-                      pInputTextarea
-                      id="observacoes"
-                      formControlName="observacoes"
-                      placeholder="Digite observações sobre o pet"
-                      rows="5"
-                      autoResize
-                    ></textarea>
-                    </div>
+                <div class="input-group">
+                  <label for="idTutor">Tutor do Pet</label>
+                  <p-select
+                    appendTo="body"
+                    id="idTutor"
+                    formControlName="idTutor"
+                    placeholder="Selecione o tutor do pet"
+                    [options]="tutoresForm"
+                    optionLabel="label"
+                    optionValue="value"
+                    fluid
+                  >
+                  </p-select>
+                </div>
+                <div class="input-group">
+                  <label for="dataNascimento">Data de Nascimento</label>
+                  <p-datepicker
+                    id="dataNascimento"
+                    formControlName="dataNascimento"
+                    placeholder="Selecione a data de nascimento do pet"
+                    [showIcon]="true"
+                    yearRange="1900:2024"
+                    dateFormat="dd/mm/yy"
+                    appendTo="body"
+                    [maxDate]="dataLimiteNascimento"
+                    fluid
+                  >
+                  </p-datepicker>
+                </div>
+                <div class="input-group">
+                  <label for="observacoes">Observações</label>
+                  <textarea
+                    pInputTextarea
+                    id="observacoes"
+                    formControlName="observacoes"
+                    placeholder="Digite observações sobre o pet"
+                    rows="5"
+                    autoResize
+                  ></textarea>
+                </div>
               </div>
               <div class="acoes multi">
                 <p-button

@@ -35,7 +35,11 @@
     <ng-template pTemplate="body" let-produto>
       <tr>
         <td>{{ produto.nome }}</td>
-        <td>{{ produto.tipo }}</td>
+        <td>
+          <app-bag-tipo-produto
+            [tipoProduto]="produto.tipo"
+          ></app-bag-tipo-produto>
+        </td>
         <td>{{ produto.quantidadeEstoque }} Unidades</td>
         <td>R$ {{ produto.valorUnitario | number: "1.2-2" }}</td>
       </tr>
@@ -45,7 +49,7 @@
         <td colspan="4" style="text-align: center; overflow: hidden">
           @if (carregandoProdutos) {
             <p-progressSpinner></p-progressSpinner>
-          } @else { 
+          } @else {
             <span>Nenhum produto com baixo estoque!</span>
           }
         </td>

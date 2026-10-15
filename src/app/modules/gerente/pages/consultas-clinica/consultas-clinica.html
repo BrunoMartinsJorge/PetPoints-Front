@@ -176,7 +176,12 @@
 
                 <div class="participante">
                   <div class="avatar">
-                    <i class="fa fa-paw"></i>
+                    <app-imagem
+                      tipo="pet"
+                      width="36"
+                      [urlImagem]="urlImagem(consulta.imagemPet)"
+                      [alt]="'Foto de ' + (consulta.pet || 'pet')"
+                    ></app-imagem>
                   </div>
                   <div class="dados">
                     <span class="rotulo">Paciente</span>

@@ -55,16 +55,8 @@ section.lista-funcionarios {
     }
 
     .imagem-funcionario {
-      display: block;
-      height: 120px;
-      width: 120px;
-      background-color: gray;
-      
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+      flex-shrink: 0;
+      line-height: 0;
     }
 
     .informacoes {

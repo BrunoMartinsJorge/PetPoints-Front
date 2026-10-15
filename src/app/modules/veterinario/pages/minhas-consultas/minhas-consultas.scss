@@ -58,16 +58,7 @@ main {
 
           .avatar {
             flex-shrink: 0;
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: 700;
-            color: var(--color-card-primary);
-            background-color: var(--color-card-primary-foreground);
-            border: 2px solid var(--color-card-primary);
+            line-height: 0;
           }
 
           .conteudo {

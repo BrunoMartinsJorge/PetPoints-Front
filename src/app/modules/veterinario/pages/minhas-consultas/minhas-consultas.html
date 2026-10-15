@@ -37,12 +37,21 @@
 <main>
   <section>
     <p-fieldset legend="Consultas do Dia">
+      @if (carregandoConsultasDia) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview #dv [value]="consultasDoDia" [paginator]="true" [rows]="3">
         <ng-template #list let-consultas>
           <div class="lista-consultas">
             @for (consulta of consultas; track consulta.id) {
               <div [ngClass]="'consulta-card ' + consulta.status.toLowerCase()">
-                <div class="avatar">{{ inicial(consulta.pet) }}</div>
+                <app-imagem
+                  class="avatar"
+                  tipo="pet"
+                  width="42"
+                  [urlImagem]="urlImagem(consulta.imagemPet)"
+                  [alt]="'Foto de ' + consulta.pet"
+                ></app-imagem>
                 <div class="conteudo">
                   <div class="linha-topo">
                     <strong>{{ consulta.cliente }}</strong>
@@ -77,6 +86,7 @@
           <span class="sem-resultados">Nenhuma consulta encontrada!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
     <p-fieldset legend="Consulta Atual">
       @if (consultaAtual === null || consultaAtual.id === null) {
@@ -147,12 +157,21 @@
   <hr />
   <section>
     <p-fieldset legend="Histórico de Consultas">
+      @if (carregandoHistoricoConsultas) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview #dv [value]="historicoConsultas" [paginator]="true" [rows]="4">
         <ng-template #list let-consultas>
           <div class="lista-consultas">
             @for (consulta of consultas; track consulta.id) {
               <div [ngClass]="'consulta-card ' + consulta.status.toLowerCase()">
-                <div class="avatar">{{ inicial(consulta.pet) }}</div>
+                <app-imagem
+                  class="avatar"
+                  tipo="pet"
+                  width="42"
+                  [urlImagem]="urlImagem(consulta.imagemPet)"
+                  [alt]="'Foto de ' + consulta.pet"
+                ></app-imagem>
                 <div class="conteudo">
                   <div class="linha-topo">
                     <strong>{{ consulta.cliente }}</strong>
@@ -191,6 +210,7 @@
           <span class="sem-resultados">Nenhuma consulta encontrada!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
   </section>
 </main>

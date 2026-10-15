@@ -14,6 +14,7 @@ export interface ConsultaClinicaDto {
   cliente: ParticipantesConsultaDto;
   veterinario: ParticipantesConsultaDto;
   pet: string | null;
+  imagemPet: string | null;
   dataConsulta: Date;
   valor: number;
   formaPagamento: TipoPagamentoEnum | null;

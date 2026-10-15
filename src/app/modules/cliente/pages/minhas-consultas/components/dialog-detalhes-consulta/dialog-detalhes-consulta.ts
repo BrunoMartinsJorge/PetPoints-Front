@@ -84,8 +84,8 @@ export class DialogDetalhesConsulta {
   public get podeAlterarFormaPagamento(): boolean {
     if (!this.pagamento) return false;
     return (
-      this.pagamento.status === StatusPagamentoEnum.REPROVADO ||
-      this.pagamento.status === StatusPagamentoEnum.PENDENTE
+      this.pagamento.statusPagamento === StatusPagamentoEnum.REPROVADO ||
+      this.pagamento.statusPagamento === StatusPagamentoEnum.PENDENTE
     );
   }
 

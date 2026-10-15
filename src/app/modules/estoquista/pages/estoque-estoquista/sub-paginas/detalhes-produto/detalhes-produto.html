@@ -46,6 +46,7 @@
   } @else {
     <p-fieldset legend="Histórico de Movimentações" [toggleable]="false">
       <p-table
+        [loading]="carregando"
         [style]="{ 'margin-top': '1rem' }"
         [value]="produto.historicoMovimentacoes"
         [paginator]="true"

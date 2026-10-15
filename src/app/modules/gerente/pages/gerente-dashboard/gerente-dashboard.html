@@ -54,6 +54,7 @@
   <section class="painel-inferior">
     <p-fieldset legend="Movimentações do mês" [toggleable]="false">
       <p-table
+        [loading]="carregandoMovimentacoes"
         [value]="movimentacoes"
         [paginator]="true"
         [rows]="8"
@@ -96,6 +97,7 @@
 
     <p-fieldset legend="Consultas do dia" [toggleable]="false">
       <p-table
+        [loading]="carregandoConsultas"
         [value]="consultas"
         [paginator]="true"
         [rows]="8"

@@ -50,7 +50,9 @@
         ></p-button>
       </div>
 
-      @if (petsFiltrados.length === 0) {
+      @if (carregandoPets) {
+        <p-skeleton height="200px" />
+      } @else if (petsFiltrados.length === 0) {
         <span class="sem-resultados">Nenhum pet encontrado!</span>
       } @else {
         <p-dataview [value]="petsFiltrados" [rows]="4" [paginator]="true">
@@ -68,7 +70,9 @@
 
   <section class="painel-consultas">
     <p-fieldset legend="Meus Pets com Consultas">
-      @if (consultas.length === 0) {
+      @if (carregandoConsultas) {
+        <p-skeleton height="200px" />
+      } @else if (consultas.length === 0) {
         <span class="sem-resultados">Nenhuma consulta encontrada!</span>
       } @else {
         <p-dataview [value]="consultas" [rows]="4" [paginator]="true">

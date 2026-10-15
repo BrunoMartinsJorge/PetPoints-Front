@@ -28,6 +28,8 @@ export class GerenteDashboard implements OnInit {
   public opcoesGrafico = {};
   public movimentacoes: MovimentacoesGerenteDto[] = [];
   public consultas: ConsultasGerenteDto[] = [];
+  public carregandoMovimentacoes = false;
+  public carregandoConsultas = false;
   public dataAtualizacao: Date = new Date();
 
   /**
@@ -121,18 +123,28 @@ export class GerenteDashboard implements OnInit {
 
   private buscarMovimentacoes(): void {
     this.movimentacoes = [];
+    this.carregandoMovimentacoes = true;
     this.service.buscarMovimentacoesMes().subscribe({
       next: (response: MovimentacoesGerenteDto[]) => {
         this.movimentacoes = response;
+        this.carregandoMovimentacoes = false;
+      },
+      error: () => {
+        this.carregandoMovimentacoes = false;
       },
     });
   }
 
   private buscarConsultas(): void {
     this.consultas = [];
+    this.carregandoConsultas = true;
     this.service.buscarConsultas().subscribe({
       next: (response: ConsultasGerenteDto[]) => {
         this.consultas = response;
+        this.carregandoConsultas = false;
+      },
+      error: () => {
+        this.carregandoConsultas = false;
       },
     });
   }
@@ -162,7 +174,7 @@ export class GerenteDashboard implements OnInit {
           fill: true,
           tension: 0.4,
           borderWidth: 2,
-          pointRadius: 0,
+          pointRadius: this.acessosMes.length === 1 ? 4 : 0,
           pointHoverRadius: 5,
           pointBackgroundColor: corPrimaria,
         },

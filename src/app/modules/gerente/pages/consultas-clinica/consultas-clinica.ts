@@ -6,6 +6,8 @@ import type { ConsultaClinicaDto } from './model/ConsultaClinicaDto';
 import type { TiposConsultaDto } from './model/TiposConsultaDto';
 import type { OpcoesFiltro } from './model/OpcoesFiltro';
 import { BagStatusConsulta } from '../../../../shared/components/bag-status-consulta/bag-status-consulta';
+import { Imagem } from '../../../../shared/components/imagem/imagem';
+import { urlArquivo } from '../../../../shared/utils/imagem-url';
 import type { DetalhesTipoConsultaDto } from './model/DetalhesTipoConsultaDto';
 import { TabsModule } from 'primeng/tabs';
 import type { TipoConsultaForm } from './form/TipoConsultaForm';
@@ -34,6 +36,7 @@ import { ConfirmationService } from 'primeng/api';
     AccordionModule,
     DetalhesConsulta,
     CardResumo,
+    Imagem,
   ],
   providers: [ConfirmationService],
   templateUrl: './consultas-clinica.html',
@@ -438,6 +441,10 @@ export class ConsultasClinica implements OnInit {
 
   public urlAvatar(idUsuario: number): string {
     return environment.apiUrl + '/arquivos/usuario/' + idUsuario;
+  }
+
+  public urlImagem(uuid: string | null | undefined): string {
+    return urlArquivo(uuid);
   }
 
   /**

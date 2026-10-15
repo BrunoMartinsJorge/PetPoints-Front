@@ -180,7 +180,7 @@
               </div>
               <div class="tipo-pagamento">
                 <span>
-                  {{ pagamento.status.toString() | titlecase }}
+                  {{ pagamento.statusPagamento.toString() | titlecase }}
                 </span>
                 <div class="input-group">
                   <p-select
@@ -211,7 +211,7 @@
               label="Realizar Pagamento"
               [disabled]="
                 pagamento === null ||
-                pagamento.status === 'APROVADO'
+                pagamento.statusPagamento === 'APROVADO'
               "
               severity="success"
               icon="fa far fa-credit-card"

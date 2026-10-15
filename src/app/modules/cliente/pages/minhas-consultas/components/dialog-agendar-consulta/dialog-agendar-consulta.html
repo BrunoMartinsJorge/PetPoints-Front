@@ -72,7 +72,7 @@
                   <span>
                     {{ veterinario.especializacoes }}
                     - <i class="fa fa-star"></i>
-                    {{ typeof veterinario.avaliacao === "number" ? veterinario.avaliacao : "Sem Avaliação" }}
+                    {{ typeof veterinario.avaliacao === "number" ? (veterinario.avaliacao | number: '1.2-2') : "Sem Avaliação" }}
                   </span>
                 </div>
               </button>

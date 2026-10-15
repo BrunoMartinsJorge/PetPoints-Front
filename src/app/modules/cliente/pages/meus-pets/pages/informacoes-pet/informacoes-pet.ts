@@ -48,6 +48,8 @@ export class InformacoesPet implements OnInit {
   public petSelecionado: PetDetalhesDto | undefined = undefined;
   public petsRelacionados: PetSemelhantesDto[] = [];
   public consultasPet: MinhasConsultasDto[] = [];
+  public carregandoConsultas = false;
+  public carregandoPetsRelacionados = false;
   public htmlCarteirinha = '';
   private idPetSelecionado = 0;
   public informacoesCarteirinha: CarteirinhaPetDto | null = null;
@@ -129,11 +131,18 @@ export class InformacoesPet implements OnInit {
 
   private buscarPetSelecionado(): void {
     this.petSelecionado = undefined;
+    this.carregandoPetsRelacionados = true;
     this.service
       .buscarPetSelecionado(this.idPetSelecionado)
-      .subscribe((res: PetDetalhesDto) => {
-        this.petSelecionado = res;
-        this.petsRelacionados = res.petsRelacionados;
+      .subscribe({
+        next: (res: PetDetalhesDto) => {
+          this.petSelecionado = res;
+          this.petsRelacionados = res.petsRelacionados;
+          this.carregandoPetsRelacionados = false;
+        },
+        error: () => {
+          this.carregandoPetsRelacionados = false;
+        },
       });
   }
 
@@ -164,9 +173,14 @@ export class InformacoesPet implements OnInit {
 
   private buscarConsultasPet(): void {
     this.consultasPet = [];
+    this.carregandoConsultas = true;
     this.service.buscarConsultasPet(this.idPetSelecionado).subscribe({
       next: (response: MinhasConsultasDto[]) => {
         this.consultasPet = response;
+        this.carregandoConsultas = false;
+      },
+      error: () => {
+        this.carregandoConsultas = false;
       },
     });
   }

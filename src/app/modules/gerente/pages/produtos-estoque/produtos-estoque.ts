@@ -7,10 +7,11 @@ import { ProdutosEstoqueService } from './service/produtos-estoque-service';
 import { TipoProdutoOpcoes } from '../../../../shared/models/enums/TipoProdutoEnum';
 import type { OptionSelect } from '../../../../shared/models/OptionSelect';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { BagTipoProduto } from '../../../../shared/components/bag-tipo-produto/bag-tipo-produto';
 
 @Component({
   selector: 'app-produtos-estoque',
-  imports: [PrimeNGModule, InputNumberModule],
+  imports: [PrimeNGModule, InputNumberModule, BagTipoProduto],
   templateUrl: './produtos-estoque.html',
   styleUrl: './produtos-estoque.scss',
 })
@@ -19,6 +20,7 @@ export class ProdutosEstoque implements OnInit {
 
   private produtos: ProdutoDto[] = [];
   public produtosFiltrados: ProdutoDto[] = [];
+  public carregandoProdutos = false;
 
   public produtoSelecionado: ProdutoDto | null = null;
   public visibilidadeEditarProduto = false;
@@ -36,10 +38,15 @@ export class ProdutosEstoque implements OnInit {
   }
 
   private buscarProdutos(): void {
+    this.carregandoProdutos = true;
     this.service.listarProduto().subscribe({
       next: (produtos) => {
         this.produtos = produtos;
         this.produtosFiltrados = produtos;
+        this.carregandoProdutos = false;
+      },
+      error: () => {
+        this.carregandoProdutos = false;
       },
     });
   }

@@ -8,6 +8,7 @@
             id="dataInicio"
             [(ngModel)]="filtros.dataInicio"
             dateFormat="dd/mm/yy"
+            placeholder="De..."
             showIcon="true"
             (onSelect)="filtrarMovimentacoes()"
           ></p-datePicker>
@@ -19,6 +20,7 @@
             [(ngModel)]="filtros.dataFim"
             dateFormat="dd/mm/yy"
             showIcon="true"
+            placeholder="Até..."
             (onSelect)="filtrarMovimentacoes()"
           ></p-datePicker>
         </div>
@@ -76,6 +78,7 @@
   </p-fieldset>
   <hr />
   <p-table
+    [loading]="carregandoMovimentacoes"
     [value]="movimentacoesFiltradas"
     [paginator]="true"
     [rows]="12"

@@ -30,6 +30,9 @@
   <hr />
   <section class="atendimentos">
     <p-fieldset legend="Meus Atendimentos">
+      @if (carregandoAtendimentos) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview #dv [value]="listaAtendimentos" [paginator]="true" [rows]="6">
         <ng-template #list let-atendimentos>
           <div class="lista-atendimentos">
@@ -66,8 +69,12 @@
           <span class="sem-resultados">Nenhum atendimento encontrado!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
     <p-fieldset legend="Atendimentos Pendentes">
+      @if (carregandoSolicitacoesAtendimentos) {
+        <p-skeleton height="200px" />
+      } @else {
       <p-dataview
         #dv
         [value]="listaSolicitacoesAtendimentos"
@@ -115,6 +122,7 @@
           <span class="sem-resultados">Nenhum solicitação de atendimento encontrada!</span>
         </ng-template>
       </p-dataview>
+      }
     </p-fieldset>
   </section>
 </main>

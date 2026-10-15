@@ -8,12 +8,13 @@ import { Router } from '@angular/router';
 import type { FiltroFuncionariosForm } from './form/FiltroFuncionariosForm';
 import { ConverterCpfPipe } from '../../../../shared/pipes/converter-cpf-pipe';
 import { GeneroBag } from '../../../../shared/components/genero-bag/genero-bag';
+import { Imagem } from '../../../../shared/components/imagem/imagem';
+import { urlArquivo } from '../../../../shared/utils/imagem-url';
 import { ChatApiService } from '../../../../shared/services/chat-api-service';
-import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-funcionarios',
-  imports: [PrimeNGModule, ConverterCpfPipe, GeneroBag],
+  imports: [PrimeNGModule, ConverterCpfPipe, GeneroBag, Imagem],
   templateUrl: './funcionarios.html',
   styleUrl: './funcionarios.scss',
 })
@@ -130,9 +131,7 @@ export class Funcionarios implements OnInit {
     this.router.navigate(['gerente/chat-interno']);
   }
 
-  public getImagemFuncionario(funcionario: FuncionarioDto): string {
-    if (!funcionario) return '';
-    const uuid = funcionario.arquivo || '';
-    return uuid !== '' ? environment.apiUrl + '/arquivos' + uuid : '';
+  public urlImagem(uuid: string | null | undefined): string {
+    return urlArquivo(uuid);
   }
 }

@@ -19,6 +19,7 @@ export class MinhasMovimentacoes implements OnInit {
 
   private movimentacoes: MinhasMovimentacoesDto[] = [];
   public movimentacoesFiltradas: MinhasMovimentacoesDto[] = [];
+  public carregandoMovimentacoes = false;
   public produtos: ProdutoFiltroDto[] = [];
 
   public visibilidadeNovaMovimentacao = false;
@@ -38,10 +39,15 @@ export class MinhasMovimentacoes implements OnInit {
   private listarMinhasMovimentacoes(): void {
     this.movimentacoes = [];
     this.movimentacoesFiltradas = [];
+    this.carregandoMovimentacoes = true;
     this.service.listarMinhasMovimentacoes().subscribe({
       next: (response) => {
         this.movimentacoes = response;
         this.movimentacoesFiltradas = response;
+        this.carregandoMovimentacoes = false;
+      },
+      error: () => {
+        this.carregandoMovimentacoes = false;
       },
     });
   }

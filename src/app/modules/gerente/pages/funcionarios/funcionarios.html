@@ -90,10 +90,15 @@
                 "
               >
                 <div class="imagem-funcionario">
-                  <img
-                    [src]="getImagemFuncionario(funcionario)"
-                    alt="Imagem do funcionário"
-                  />
+                  <app-imagem
+                    tipo="usuario"
+                    [imagemRedonda]="false"
+                    [preview]="true"
+                    width="120"
+                    height="120"
+                    [urlImagem]="urlImagem(funcionario.arquivo)"
+                    [alt]="'Foto de ' + funcionario.nome"
+                  ></app-imagem>
                 </div>
                 <div class="informacoes">
                   <div class="header">
