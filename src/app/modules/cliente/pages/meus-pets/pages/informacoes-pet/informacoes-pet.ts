@@ -22,6 +22,8 @@ import { CarteirinhaPdfService } from '../../../../../../shared/components/carte
 import { BagStatusPerfil } from "../../../../../../shared/components/bag-status-perfil/bag-status-perfil";
 import { Imagem } from '../../../../../../shared/components/imagem/imagem';
 import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
 @Component({
   selector: 'app-informacoes-pet',
@@ -33,7 +35,9 @@ import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
     BagStatusConsulta,
     CarteirinhaPet,
     BagStatusPerfil,
-    Imagem
+    Imagem,
+    InputGroupModule,
+    InputGroupAddonModule
 ],
   providers: [MessageService],
   templateUrl: './informacoes-pet.html',

@@ -59,6 +59,7 @@ export class DetalhesPagamento implements OnChanges {
     if (!this.pagamentoSelecionado) return;
     this.consultaPagamento = null;
     this.carregandoInformacoesConsultaPagamento = true;
+    console.log(this.pagamentoSelecionado);
     this.service
       .buscarConsultaPagamento(this.pagamentoSelecionado.idConsulta)
       .subscribe({
