@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import type { Observable } from 'rxjs';
 import type { CardsPagamentoDto } from '../models/CardsPagamentoDto';
-import type { PagamentosDto } from '../models/PagamentosDto';
+import type { PagamentoDetalhadoDto, PagamentosDto } from '../models/PagamentosDto';
 import type { TipoPagamentoEnum } from '../../../../../shared/models/enums/TipoPagamentoEnum';
 import type { MinhasConsultasDto } from '../../minhas-consultas/models/MinhasConsultasDto';
 
@@ -52,6 +52,10 @@ export class MeusPagamentosService {
 
   public buscarPagamento(idPagamento: number): Observable<PagamentosDto> {
     return this.http.get<PagamentosDto>(`${this.URL}/${idPagamento}`);
+  }
+
+  public buscarPagamentoDetalhado(idPagamento: number): Observable<PagamentoDetalhadoDto> {
+    return this.http.get<PagamentoDetalhadoDto>(`${this.URL}/${idPagamento}`);
   }
 
   public iniciarSecaoPagamento(idPagamento: number): Observable<any> {

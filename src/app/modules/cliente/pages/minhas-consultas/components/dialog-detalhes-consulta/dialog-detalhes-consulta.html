@@ -185,7 +185,7 @@
                 <div class="input-group">
                   <p-select
                     [options]="formasPagamento"
-                    [(ngModel)]="pagamento.formaPagamento"
+                    [(ngModel)]="pagamento.tipoPagamento"
                     optionLabel="label"
                     optionValue="value"
                     placeholder="Forma de Pagamento"
@@ -196,7 +196,7 @@
               </div>
             </div>
           </div>
-          @if (getFormaPagamentoAtual !== pagamento.formaPagamento) {
+          @if (getFormaPagamentoAtual !== pagamento.tipoPagamento) {
             <p-button
               icon="pi pi-check"
               (click)="alterarFormaPagamento()"

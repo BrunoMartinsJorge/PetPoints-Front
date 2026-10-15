@@ -1,7 +1,7 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import type { OnChanges, SimpleChanges } from '@angular/core';
+import type { OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { PrimeNGModule } from '../../../../../../shared/modules/prime-ng/prime-ng-module';
-import type { PagamentosDto } from '../../models/PagamentosDto';
+import type { PagamentoDetalhadoDto, PagamentoPixDto, PagamentosDto } from '../../models/PagamentosDto';
 import type { MinhasConsultasDto } from '../../../minhas-consultas/models/MinhasConsultasDto';
 import { BagStatusConsulta } from '../../../../../../shared/components/bag-status-consulta/bag-status-consulta';
 import { BagStatusPagamento } from '../../../../../../shared/components/bag-status-pagamento/bag-status-pagamento';
@@ -15,6 +15,7 @@ import {
 } from '../../../../../../shared/models/enums/TipoPagamentoEnum';
 import { StatusPagamentoEnum } from '../../../../../../shared/models/enums/StatusPagamentoEnum';
 import { MessageService } from 'primeng/api';
+import { Subscription, interval, switchMap, takeWhile } from 'rxjs';
 import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
 
 @Component({
@@ -23,7 +24,7 @@ import { urlArquivo } from '../../../../../../shared/utils/imagem-url';
   templateUrl: './detalhes-pagamento.html',
   styleUrl: './detalhes-pagamento.scss',
 })
-export class DetalhesPagamento implements OnChanges {
+export class DetalhesPagamento implements OnChanges, OnDestroy {
   @Input() public visibilidade = false;
   @Input() public pagamentoSelecionado: PagamentosDto | null = null;
 
@@ -40,6 +41,11 @@ export class DetalhesPagamento implements OnChanges {
   public novaFormaPagamento: TipoPagamentoEnum | undefined;
   public alterandoFormaPagamento = false;
 
+  public pixInfo: PagamentoPixDto | null = null;
+  public carregandoPix = false;
+  public pixCopiado = false;
+  private pollingSubscription: Subscription | null = null;
+
   public carregandoInformacoesConsultaPagamento = false;
   public consultaPagamento: MinhasConsultasDto | null = null;
 
@@ -47,10 +53,16 @@ export class DetalhesPagamento implements OnChanges {
     if (changes['pagamentoSelecionado'] && this.pagamentoSelecionado) {
       this.novaFormaPagamento = this.pagamentoSelecionado.tipoPagamento;
       this.buscarInformacoesConsultaPagamento();
+      this.pixInfo = null;
+      this.pararPolling();
+      if (this.pagamentoSelecionado.tipoPagamento === TipoPagamentoEnum.PIX && !this.pagamentoAprovado) {
+        this.buscarDetalhesPix();
+      }
     }
   }
 
   public fecharDialog(): void {
+    this.pararPolling();
     this.visibilidade = false;
     this.visibilidadeChange.emit(false);
   }
@@ -69,6 +81,99 @@ export class DetalhesPagamento implements OnChanges {
         },
         error: () => (this.carregandoInformacoesConsultaPagamento = false),
       });
+  }
+
+  ngOnDestroy(): void {
+    this.pararPolling();
+  }
+
+  public get pagamentoPix(): boolean {
+    return this.novaFormaPagamento === TipoPagamentoEnum.PIX;
+  }
+
+  private buscarDetalhesPix(): void {
+    if (!this.pagamentoSelecionado) return;
+    this.carregandoPix = true;
+    this.pixInfo = null;
+    this.service.buscarPagamentoDetalhado(this.pagamentoSelecionado.id).subscribe({
+      next: (response: PagamentoDetalhadoDto) => {
+        this.carregandoPix = false;
+        if (response.pixPagamento) {
+          this.pixInfo = response.pixPagamento;
+          if (response.statusPagamento === StatusPagamentoEnum.APROVADO) {
+            this.pagamentoSelecionado!.statusPagamento = StatusPagamentoEnum.APROVADO;
+          } else {
+            this.iniciarPollingStatus();
+          }
+        }
+      },
+      error: () => {
+        this.carregandoPix = false;
+      },
+    });
+  }
+
+  private iniciarPollingStatus(): void {
+    this.pararPolling();
+    if (!this.pagamentoSelecionado) return;
+    const idPagamento = this.pagamentoSelecionado.id;
+    this.pollingSubscription = interval(5000)
+      .pipe(
+        switchMap(() => this.service.buscarPagamentoDetalhado(idPagamento)),
+        takeWhile(
+          (response) =>
+            response.statusPagamento !== StatusPagamentoEnum.APROVADO &&
+            response.statusPagamento !== StatusPagamentoEnum.CANCELADO &&
+            response.statusPagamento !== StatusPagamentoEnum.RECUSADO,
+          true,
+        ),
+      )
+      .subscribe({
+        next: (response: PagamentoDetalhadoDto) => {
+          if (response.statusPagamento === StatusPagamentoEnum.APROVADO) {
+            this.pagamentoSelecionado!.statusPagamento = StatusPagamentoEnum.APROVADO;
+            this.pararPolling();
+            this.alteracoesEfetuadas.emit();
+            this.toast.add({
+              severity: 'success',
+              summary: 'Pagamento Confirmado!',
+              detail: 'Seu pagamento via PIX foi aprovado com sucesso!',
+            });
+          } else if (
+            response.statusPagamento === StatusPagamentoEnum.CANCELADO ||
+            response.statusPagamento === StatusPagamentoEnum.RECUSADO
+          ) {
+            this.pagamentoSelecionado!.statusPagamento = response.statusPagamento;
+            this.pararPolling();
+            this.alteracoesEfetuadas.emit();
+          }
+          if (response.pixPagamento) {
+            this.pixInfo = response.pixPagamento;
+          }
+        },
+      });
+  }
+
+  private pararPolling(): void {
+    if (this.pollingSubscription) {
+      this.pollingSubscription.unsubscribe();
+      this.pollingSubscription = null;
+    }
+  }
+
+  public copiarCodigoPix(): void {
+    if (!this.pixInfo) return;
+    const texto = this.pixInfo.qrCodeCopiaECola || this.pixInfo.urlPagamento;
+    if (!texto) return;
+    navigator.clipboard.writeText(texto).then(() => {
+      this.pixCopiado = true;
+      this.toast.add({
+        severity: 'info',
+        summary: 'Copiado!',
+        detail: 'Código PIX copiado para a área de transferência.',
+      });
+      setTimeout(() => (this.pixCopiado = false), 3000);
+    });
   }
 
   public get pagamentoAprovado(): boolean {

@@ -9,7 +9,7 @@ import { DetalhesPagamento } from './components/detalhes-pagamento/detalhes-paga
 import { finalize } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CardResumo } from '../../../../shared/components/card-resumo/card-resumo';
-import { BagStatusPagamento } from "../../../../shared/components/bag-status-pagamento/bag-status-pagamento";
+import { BagStatusPagamento } from '../../../../shared/components/bag-status-pagamento/bag-status-pagamento';
 
 @Component({
   selector: 'app-meus-pagamentos',

@@ -67,7 +67,11 @@
               <ul class="dados">
                 <li>
                   <span>Data Limite:</span>
-                  <span>{{ pagamentoSelecionado.dataLimitePagamento !== null ? pagamentoSelecionado.dataLimitePagamento : '-' }}</span>
+                  <span>{{
+                    pagamentoSelecionado.dataLimitePagamento !== null
+                      ? pagamentoSelecionado.dataLimitePagamento
+                      : "-"
+                  }}</span>
                 </li>
                 <li>
                   <span>Identificador:</span>
@@ -191,15 +195,79 @@
                     pagamento online.
                   </span>
                 }
+              } @else if (pagamentoPix) {
+                @if (
+                  novaFormaPagamento !== pagamentoSelecionado.tipoPagamento
+                ) {
+                  <span class="ajuda">
+                    Salve a alteração da forma de pagamento para exibir o QR
+                    Code do PIX.
+                  </span>
+                } @else if (carregandoPix) {
+                  <div class="pix-loading">
+                    <p-skeleton height="200px" width="200px" />
+                    <p-skeleton height="40px" width="100%" />
+                  </div>
+                } @else if (pixInfo?.qrCodeBase) {
+                  <div class="pix-qrcode">
+                    <div class="aviso neutro">
+                      <i class="fa fa-qrcode"></i>
+                      <div>
+                        <strong>Pagamento via PIX</strong>
+                        <span>
+                          Escaneie o QR Code abaixo com o app do seu banco ou
+                          copie o código para pagar.
+                        </span>
+                      </div>
+                    </div>
+                    <div class="qrcode-container">
+                      @if (pixInfo !== null && pixInfo.qrCodeBase !== null) {
+                        <img
+                          [src]="'data:image/png;base64,' + pixInfo.qrCodeBase"
+                          alt="QR Code PIX"
+                          class="qrcode-img"
+                        />
+                      }
+                    </div>
+                    <p-button
+                      [label]="pixCopiado ? 'Copiado!' : 'Copiar código PIX'"
+                      [icon]="pixCopiado ? 'fa fa-check' : 'fa fa-copy'"
+                      [severity]="pixCopiado ? 'success' : 'info'"
+                      fluid
+                      (click)="copiarCodigoPix()"
+                    ></p-button>
+                    @if (pixInfo !== null && pixInfo.urlPagamento !== null) {
+                      <a
+                        [href]="pixInfo.urlPagamento"
+                        target="_blank"
+                        class="link-pagamento"
+                      >
+                        <i class="fa fa-external-link"></i>
+                        Abrir página de pagamento
+                      </a>
+                    }
+                  </div>
+                } @else {
+                  <div class="aviso neutro">
+                    <i class="fa fa-circle-exclamation"></i>
+                    <div>
+                      <strong>QR Code indisponível</strong>
+                      <span>
+                        Não foi possível gerar o QR Code do PIX. Tente novamente
+                        mais tarde ou entre em contato com a clínica.
+                      </span>
+                    </div>
+                  </div>
+                }
               } @else {
                 <div class="aviso neutro">
                   <i class="fa fa-circle-info"></i>
                   <div>
                     <strong>Pagamento presencial</strong>
                     <span>
-                      Pagamentos em Pix ou dinheiro são acertados diretamente na
+                      Pagamentos em dinheiro são acertados diretamente na
                       clínica. Para pagar por aqui, altere a forma de pagamento
-                      para Cartão.
+                      para Cartão ou Pix.
                     </span>
                   </div>
                 </div>

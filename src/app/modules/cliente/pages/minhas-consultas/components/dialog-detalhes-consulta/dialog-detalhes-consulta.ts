@@ -114,7 +114,7 @@ export class DialogDetalhesConsulta {
       next: (pagamento) => {
         this.pagamento = pagamento;
         if (pagamento != null)
-          this.formaPagamentoAtual = pagamento.formaPagamento;
+          this.formaPagamentoAtual = pagamento.tipoPagamento;
       },
     });
   }
@@ -159,7 +159,7 @@ export class DialogDetalhesConsulta {
     if (
       !this.pagamento ||
       !this.pagamento.pixPagamento ||
-      this.pagamento.formaPagamento != TipoPagamentoEnum.PIX
+      this.pagamento.tipoPagamento != TipoPagamentoEnum.PIX
     )
       return;
     navigator.clipboard.writeText(this.pagamento.pixPagamento.urlPagamento);
@@ -171,13 +171,23 @@ export class DialogDetalhesConsulta {
   }
 
   public alterarFormaPagamento(): void {
-    if (!this.formaPagamentoAtual || !this.pagamento || !this.consulta) return;
-    if (this.pagamento.formaPagamento === this.formaPagamentoAtual) return;
+    if (!this.formaPagamentoAtual || !this.pagamento || !this.consulta) {
+      console.log(this.formaPagamentoAtual);
+      console.log(this.pagamento);
+      console.log(this.consulta);
+      
+      console.log('Parou no 1');
+      return;
+    };
+    if (this.pagamento.tipoPagamento === this.formaPagamentoAtual) {
+      console.log('Parou no 2');
+      return;
+    }
 
     this.service
       .alterarFormaPagamentoPorConsulta(
         this.consulta.id,
-        this.pagamento.formaPagamento,
+        this.pagamento.tipoPagamento,
       )
       .subscribe({
         next: () => {

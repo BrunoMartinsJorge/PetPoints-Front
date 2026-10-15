@@ -3,7 +3,7 @@ import type { TipoPagamentoEnum } from "../../../../../shared/models/enums/TipoP
 
 export interface PagamentoDto {
   id: number;
-  formaPagamento: TipoPagamentoEnum;
+  tipoPagamento: TipoPagamentoEnum;
   valor: number;
   statusPagamento: StatusPagamentoEnum;
   pixPagamento: PagamentoPixDto;
